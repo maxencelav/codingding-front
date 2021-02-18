@@ -18,7 +18,8 @@ export default new Router({
     routes: [
         { path: '/', name: 'Home', component: Home},
         { path: '/achievements', name: 'Achievements', component: Achievements },
-        { path: '/profile/:id', name: 'Profile', component: Profile }
+        { path: '/profile/:id', name: 'Profile', component: Profile },
+        { path: '/profile/:id/edit', name: 'Profile', component: Profile }
     ]
 })
 
