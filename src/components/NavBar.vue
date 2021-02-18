@@ -10,7 +10,7 @@
           <b-nav-item to="/achievements">Achievements</b-nav-item>
           <b-nav-item to="/planning" disabled>Agenda</b-nav-item>
           <b-nav-item to="/scrum" disabled>Scrum</b-nav-item>
-          <b-nav-item to="/users" disabled>Annuaire</b-nav-item>
+          <b-nav-item to="/users" >Annuaire</b-nav-item>
           <b-nav-item to="/wishlist" disabled>Wishlist</b-nav-item>
         </b-navbar-nav>
 

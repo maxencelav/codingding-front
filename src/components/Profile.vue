@@ -32,7 +32,9 @@
           </div>
 
           <b-list-group>
-            <b-list-group-item button><b-icon-envelope-fill></b-icon-envelope-fill> {{ profile.email }}</b-list-group-item>
+            <b-list-group-item button>
+              <b-icon-envelope-fill></b-icon-envelope-fill> {{ profile.email }}
+            </b-list-group-item>
             <b-list-group-item
               button
               v-for="link in profile.gitHubLinks"
@@ -42,8 +44,7 @@
             </b-list-group-item>
           </b-list-group>
         </b-col>
-        <b-col md="9">
-        </b-col>
+        <b-col md="9"></b-col>
       </b-row>
     </b-container>
   </div>
