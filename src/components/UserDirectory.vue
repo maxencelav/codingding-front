@@ -8,7 +8,7 @@
           <b-avatar :src="data.value"></b-avatar>
         </template>
         <template #cell(_id)="data">
-            <b-link to="/profil/{{data.value}}">Profil</b-link>
+            <b-link :to="/profile/+data.value">Profil</b-link>
         </template>
       </b-table>
     </b-container>
