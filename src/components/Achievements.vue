@@ -8,7 +8,7 @@
       </p>
       <b-card-group columns>
         <Achievement
-          v-for="achievement in achievements"
+          v-for="achievement in achievementsAPI"
           v-bind:key="achievement.id"
           v-bind:achievement="achievement"
         ></Achievement>
@@ -19,6 +19,8 @@
 
 <script>
 import Achievement from "./Achievement.vue";
+//import axios from "axios";
+import AchievementsDataService from "../services/AchievementsDataService";
 
 export default {
   name: "Achievements",
@@ -27,6 +29,7 @@ export default {
   },
   data() {
     return {
+      achievementsAPI: [],
       achievements: [
         {
           id: 0,
@@ -79,6 +82,13 @@ export default {
       ],
     };
   },
+   mounted() {
+    AchievementsDataService.getAll()
+      .then((response) => {
+        this.achievementsAPI = response.data;
+        console.log(response.data);
+      });
+  }
 };
 </script>
 
