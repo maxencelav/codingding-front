@@ -36,8 +36,18 @@
 </template>
 
 <script>
+
+import axios from 'axios';
 export default {
   name: "NavBar",
+  methods: {
+    login() {
+      axios.get("http://localhost:4000/auth/google")
+        .then(res => {
+          console.log(res)
+        }).catch(e => console.log(e))
+    }
+  }
 };
 </script>
 
