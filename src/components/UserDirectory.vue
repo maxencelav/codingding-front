@@ -3,7 +3,14 @@
     <b-container>
       <h1 class="display-1">Annuaire</h1>
       <p class="lead">Retrouvez ici tous les étudiants de la Coding Factory.</p>
-      <b-table striped hover :items="users" :fields="userFields"></b-table>
+      <b-table striped hover :items="users" :fields="userFields">
+        <template #cell(profilePic)="data">
+          <b-avatar :src="data.value"></b-avatar>
+        </template>
+        <template #cell(_id)="data">
+            <b-link to="/profil/{{data.value}}">Profil</b-link>
+        </template>
+      </b-table>
     </b-container>
   </div>
 </template>
@@ -16,46 +23,68 @@ export default {
     return {
       userFields: [
         {
+          key: "profilePic",
+          label: "Photo de profil",
+          sortable: false,
+        },
+        {
           key: "firstName",
           label: "Prénom",
-          sortable: false,
+          sortable: true,
         },
         {
           key: "lastName",
           label: "Nom",
+          sortable: true,
+        },
+        {
+          key: "classYear",
+          label: "Année",
+          sortable: true,
+        },
+        {
+          key: "classStatus",
+          label: "Statut",
+          sortable: true,
+        },
+        {
+          key: "classLocation",
+          label: "Campus",
+          sortable: true,
+        },
+        {
+          key: "_id",
+          label: "Profil",
           sortable: false,
         },
       ],
       users: [
         {
-          firstName: "FirstName",
-          lastName: "LastName",
-          email: "email@mail.com",
-          profilePic: "https://picsum.photos/200",
-          classYear: 1,
+          _id:"AYOAO",
+          firstName: "Alan",
+          lastName: "Lelia",
+          profilePic: "https://picsum.photos/200?random=1",
+          classYear: 3,
           classStatus: "TP",
           classLocation: "Cergy",
-          gitHubLinks: ["maxencelav", "ninjamuffin99"],
         },
         {
-          firstName: "FirstName",
-          lastName: "LastName",
-          email: "email@mail.com",
-          profilePic: "https://picsum.photos/200",
+          _id:"WUXEO",
+          firstName: "Mason",
+          lastName: "Bess",
+          profilePic: "https://picsum.photos/200?random=2",
           classYear: 1,
           classStatus: "TP",
           classLocation: "Cergy",
-          gitHubLinks: ["maxencelav", "ninjamuffin99"],
         },
         {
-          firstName: "FirstName",
-          lastName: "LastName",
-          email: "email@mail.com",
-          profilePic: "https://picsum.photos/200",
-          classYear: 1,
+          _id:"EBBDS",
+          firstName: "Vera",
+          lastName: "Leona",
+          profilePic: "https://picsum.photos/200?random=3",
+          classYear: 2,
           classStatus: "TP",
-          classLocation: "Cergy",
-          gitHubLinks: ["maxencelav", "ninjamuffin99"],
+          classLocation: "Paris",
         },
       ],
     };
