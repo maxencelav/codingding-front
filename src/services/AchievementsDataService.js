@@ -1,6 +1,8 @@
 import http from "../http-common";
 
 class AchievementsDataService {
+
+  /* OK */
   getAll() {
     return http.get("/achievements");
   }
