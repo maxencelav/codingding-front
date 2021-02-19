@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :key="componentKey">
     <b-container>
       <h1 class="display-1">Achievements</h1>
       <p class="lead">
@@ -8,11 +8,12 @@
       </p>
       <b-card-group columns>
         <Achievement
-          v-for="achievement in achievements"
+          v-for="(achievement, index) in achievements"
           v-bind:key="achievement.id"
           v-bind:achievement="achievement"
-        ></Achievement>
-         <b-button variant="danger">Supprimer</b-button>
+        >   
+          <b-button variant="danger" v-on:click="deleteAchievement(`${achievement._id}`, index)"><b-icon-x></b-icon-x></b-button>
+        </Achievement>
       </b-card-group>
     </b-container>
 
@@ -50,7 +51,8 @@ export default {
         title: '',
         message: ''
       },
-      errMessage: ''
+      errMessage: '',
+      componentKey: 0
     };
   },
   methods: {
@@ -63,12 +65,22 @@ export default {
       axios.post("http://localhost:4000/achievements", data)
         .then((response) => {
           console.log(response.data);
+          this.achievements.push(response.data)
           this.errMessage = 'Accomplissement ajouté !';
         })
         .catch(e => {
           console.log(e);
           this.errMessage = 'Erreur';
         })
+    },
+    deleteAchievement(id, index) {
+        AchievementsDataService.delete(id)
+          .then(response => {
+            console.log("In delete..." + response);
+            this.achievements.splice(index, 1).push(response.data);
+          }).catch(e => {
+            console.log(e);
+          })
     }
   },
   mounted() {
