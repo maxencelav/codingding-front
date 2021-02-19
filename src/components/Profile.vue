@@ -56,16 +56,6 @@ export default {
   name: "Profile",
   data() {
     return {
-      profileAPI: {
-        firstName: "FirstName",
-        lastName: "LastName",
-        email: "email@mail.com",
-        profilePic: "https://picsum.photos/200",
-        classYear: 1,
-        classStatus: "TP",
-        classLocation: "Cergy",
-        gitHubLinks: ["maxencelav", "ninjamuffin99"],
-      },
       profile: {}
     };
   },

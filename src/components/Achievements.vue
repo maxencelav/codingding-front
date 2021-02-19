@@ -12,6 +12,7 @@
           v-bind:key="achievement.id"
           v-bind:achievement="achievement"
         ></Achievement>
+         <b-button variant="danger">Supprimer</b-button>
       </b-card-group>
     </b-container>
 
@@ -58,9 +59,7 @@ export default {
         name: this.form.title,
         message: this.form.message,
       };
-
       console.log(data);
-
       axios.post("http://localhost:4000/achievements", data)
         .then((response) => {
           console.log(response.data);
