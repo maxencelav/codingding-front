@@ -6,11 +6,14 @@
         <p>{{ achievement.message }}</p>
         <footer class="d-flex">
           <div class="blockquote-footer">
-            {{ achievement.creatorId }}
+            {{ achievement._id }}
           </div>
+          <b-button-group>
           <b-button class="ml-auto">
             <b-icon-hand-thumbs-up></b-icon-hand-thumbs-up>
-          </b-button>
+          </b-button>   
+          <slot></slot>
+          </b-button-group>  
         </footer>
       </blockquote>
     </b-card>
@@ -18,9 +21,10 @@
 </template>
 
 <script>
+
 export default {
   name: "NavBar",
-  props: ["achievement"],
+  props: ["achievement"]
 };
 </script>
 

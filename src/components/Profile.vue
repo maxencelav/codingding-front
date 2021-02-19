@@ -51,22 +51,21 @@
 </template>
 
 <script>
+import UsersDataService from '../services/UsersDataService';
 export default {
   name: "Profile",
   data() {
     return {
-      profile: {
-        firstName: "FirstName",
-        lastName: "LastName",
-        email: "email@mail.com",
-        profilePic: "https://picsum.photos/200",
-        classYear: 1,
-        classStatus: "TP",
-        classLocation: "Cergy",
-        gitHubLinks: ["maxencelav", "ninjamuffin99"],
-      },
+      profile: {}
     };
   },
+   mounted() {
+    UsersDataService.get(this.$route.params.id)
+      .then((response) => {
+        this.profile = response.data;
+        console.log(response.data);
+      }).catch(e => console.log(e));
+  }
 };
 </script>
 

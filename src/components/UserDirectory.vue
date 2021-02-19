@@ -3,7 +3,7 @@
     <b-container>
       <h1 class="display-1">Annuaire</h1>
       <p class="lead">Retrouvez ici tous les étudiants de la Coding Factory.</p>
-      <b-table striped hover :items="users" :fields="userFields">
+      <b-table striped hover :items="usersAPI" :fields="userFields">
         <template #cell(profilePic)="data">
           <b-avatar :src="data.value"></b-avatar>
         </template>
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import UsersDataService from '../services/UsersDataService';
+
 export default {
   name: "UserDirectory",
   components: {},
@@ -58,6 +60,7 @@ export default {
           sortable: false,
         },
       ],
+      usersAPI:[],
       users: [
         {
           _id:"AYOAO",
@@ -89,6 +92,13 @@ export default {
       ],
     };
   },
+  mounted() {
+    UsersDataService.getAll()
+      .then((response) => {
+        this.usersAPI = response.data;
+        console.log(response.data);
+      });
+  }
 };
 </script>
 
