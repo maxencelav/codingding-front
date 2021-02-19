@@ -48,25 +48,27 @@ export default {
       form: {
         title: '',
         message: ''
-      }
+      },
+      errMessage: ''
     };
   },
   methods: {
     submitAchievement() {
       const data = {
-        title: this.form.title,
-        message: this.form.message
+        name: this.form.title,
+        message: this.form.message,
       };
 
-      console.log('In Submit Achievement...');
+      console.log(data);
 
       axios.post("http://localhost:4000/achievements", data)
         .then((response) => {
           console.log(response.data);
-          this.$router.push({ name: "achievements" });
+          this.errMessage = 'Accomplissement ajouté !';
         })
         .catch(e => {
           console.log(e);
+          this.errMessage = 'Erreur';
         })
     }
   },
