@@ -16,7 +16,7 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-item>
+        <b-nav-item>
             <b-button pill variant="primary" v-on:click="login()">
               <b-icon-google></b-icon-google>
             </b-button>
@@ -27,7 +27,8 @@
               <b-avatar></b-avatar>
             </template>
             <b-dropdown-item href="#">Profil</b-dropdown-item>
-            <b-dropdown-item href="#" v-on:click="logout()">Se déconnecter</b-dropdown-item>
+            <b-dropdown-item href="http://localhost:4000/auth/google" target="_blank">Se connecter</b-dropdown-item>
+            <b-dropdown-item href="http://localhost:4000/auth/logout" target="_blank">Se déconnecter</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -36,24 +37,17 @@
 </template>
 
 <script>
+import jwt_decode from 'jwt-decode';
 
-import axios from 'axios';
 export default {
   name: "NavBar",
   currentUser: {},
   methods: {
     login() {
-      axios.get("http://localhost:4000/auth/google")
-        .then(res => {
-          this.currentUser = res.data
-          console.log(res.data)
-        }).catch(e => console.log(e))
-    },
-    logout() {
-      axios.get("http://localhost:4000/auth/logout")
-        .then(res => {
-          console.log(res)
-        }).catch(e => console.log(e))
+      var cookies = this.$cookies.get('token');
+      var decoded = jwt_decode(cookies);
+      alert(decoded);
+      console.log(decoded);
     }
   }
 };
