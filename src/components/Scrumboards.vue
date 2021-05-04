@@ -5,7 +5,7 @@
       <p class="lead">Retrouvez ici la liste de vos scrumboards.</p>
       <b-table striped hover :items="scrumAPI" :fields="scrumFields">
         <template #cell(_id)="data">
-            <b-link :to="/scrumboards/+data.value">Accéder au scrum</b-link>
+            <b-link :to="'/scrumboard/'+data.value">Accéder au scrum</b-link>
         </template>
       </b-table>
     </b-container>

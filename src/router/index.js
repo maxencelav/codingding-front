@@ -26,7 +26,7 @@ export default new Router({
         { path: '/profile/:id', name: 'Profile', component: Profile },
         { path: '/profile/:id/edit', name: 'Profile', component: Profile },
         { path: '/scrumboards', name: 'Scrumboards', component: Scrumboards },
-        { path: '/scrumboards/:id', name: 'Scrumboard', component: Scrumboard },
+        { path: '/scrumboard/:id', name: 'Scrumboard', component: Scrumboard },
         { path: '/story/:id', name: 'Story', component: Story }
     ]
 })
