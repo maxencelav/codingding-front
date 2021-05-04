@@ -1,42 +1,44 @@
 <template>
   <div class="container mt-5">
-    <h2> {{scrumboards.name}}</h2>
+    <h2>{{ scrumboards.name }}</h2>
     <div class="row">
       <div class="col form-inline">
         <b-button id="show-btn" @click="showModal">Ajouter</b-button>
         <!-- BEGIN MODAL -->
         <b-modal ref="my-modal" hide-footer title="Ajouter une story/tâche">
-        <div class="d-block text-center">
-        <b-form @submit="add">
-         <b-form-input
-          v-model="form.storyTitle"
-          required
-          placeholder="Nom"
-        ></b-form-input>
-        <b-form-input
-          v-model="form.storyDesc"
-          required
-          placeholder="Description"
-        ></b-form-input>
-          <b-form-input
-          v-model="form.storyType"
-          required
-          placeholder="Type"
-        ></b-form-input>
-         <b-form-input
-          v-model="form.storyPts"
-          required
-          placeholder="Story Points"
-        ></b-form-input>
-         <b-form-input
-          v-model="form.storyPriority"
-          required
-          placeholder="Priority"
-        ></b-form-input>
-          <b-button type="submit" variant="primary" class="ml-3">Add</b-button>
-        </b-form>
-      </div>
-    </b-modal>
+          <div class="d-block text-center">
+            <b-form @submit="add">
+              <b-form-input
+                v-model="form.storyTitle"
+                required
+                placeholder="Nom"
+              ></b-form-input>
+              <b-form-input
+                v-model="form.storyDesc"
+                required
+                placeholder="Description"
+              ></b-form-input>
+              <b-form-input
+                v-model="form.storyType"
+                required
+                placeholder="Type"
+              ></b-form-input>
+              <b-form-input
+                v-model="form.storyPts"
+                required
+                placeholder="Story Points"
+              ></b-form-input>
+              <b-form-input
+                v-model="form.storyPriority"
+                required
+                placeholder="Priority"
+              ></b-form-input>
+              <b-button type="submit" variant="primary" class="ml-3"
+                >Add</b-button
+              >
+            </b-form>
+          </div>
+        </b-modal>
         <!-- END MODAL -->
       </div>
     </div>
@@ -52,12 +54,26 @@
           >
             <div
               class="list-group-item"
-              v-for="element in backlogAPI"
+              v-for="(element, index) in backlogAPI"
               :key="element.name"
             >
-              {{ element.name }}
-              {{ element.id}}
-               <b-button variant="danger" class="ml-3" v-on:click="deleteStory(`${element._id}`, index)"><b-icon-x></b-icon-x></b-button>
+              <b-row align-h="between">
+                <b-col cols="7" class="text-break">
+                  {{ element.name }}
+                </b-col>
+                <b-col cols="5" class="text-align-right">
+                  <b-button-group size="sm">
+                    <b-button
+                      variant="danger"
+                      v-on:click="deleteStory(`${element._id}`, index)"
+                      ><b-icon-x></b-icon-x
+                    ></b-button>
+                    <b-button variant="primary" :to="'/story/' + element._id"
+                      ><b-icon-card-heading></b-icon-card-heading
+                    ></b-button>
+                  </b-button-group>
+                </b-col>
+              </b-row>
             </div>
           </draggable>
         </div>
@@ -74,11 +90,22 @@
           >
             <div
               class="list-group-item"
-              v-for="element in arrInProgress"
+              v-for="(element, index) in arrInProgress"
               :key="element.name"
             >
               {{ element.name }}
-              <b-button variant="danger" class="ml-3" v-on:click="deleteStory(`${element._id}`, index)"><b-icon-x></b-icon-x></b-button>
+              <b-button
+                variant="danger"
+                class="ml-3"
+                v-on:click="deleteStory(`${element._id}`, index)"
+                ><b-icon-x></b-icon-x
+              ></b-button>
+              <b-button
+                variant="danger"
+                class="ml-3"
+                v-on:click="deleteStory(`${element._id}`, index)"
+                ><b-icon-card-heading></b-icon-card-heading
+              ></b-button>
             </div>
           </draggable>
         </div>
@@ -95,11 +122,16 @@
           >
             <div
               class="list-group-item"
-              v-for="element in arrTested"
+              v-for="(element, index) in arrTested"
               :key="element.name"
             >
               {{ element.name }}
-              <b-button variant="danger" class="ml-3" v-on:click="deleteStory(`${element._id}`, index)"><b-icon-x></b-icon-x></b-button>
+              <b-button
+                variant="danger"
+                class="ml-3"
+                v-on:click="deleteStory(`${element._id}`, index)"
+                ><b-icon-x></b-icon-x
+              ></b-button>
             </div>
           </draggable>
         </div>
@@ -116,11 +148,16 @@
           >
             <div
               class="list-group-item"
-              v-for="element in arrDone"
+              v-for="(element, index) in arrDone"
               :key="element.name"
             >
               {{ element.name }}
-              <b-button variant="danger" class="ml-3" v-on:click="deleteStory(`${element._id}`, index)"><b-icon-x></b-icon-x></b-button>
+              <b-button
+                variant="danger"
+                class="ml-3"
+                v-on:click="deleteStory(`${element._id}`, index)"
+                ><b-icon-x></b-icon-x
+              ></b-button>
             </div>
           </draggable>
         </div>
@@ -140,7 +177,7 @@ export default {
   name: "Scrumboard",
   components: {
     //import draggable as a component
-    draggable
+    draggable,
   },
   data() {
     return {
@@ -152,90 +189,94 @@ export default {
         storyDesc: "",
         storyType: "",
         storyPts: "",
-        storyPriority: ""
+        storyPriority: "",
       },
       // 4 arrays to keep track of our 4 statuses
       arrBackLog: [
         { name: "Code Sign Up Page" },
         { name: "Test Dashboard" },
         { name: "Style Registration" },
-        { name: "Help with Designs" }
+        { name: "Help with Designs" },
       ],
       arrInProgress: [],
       arrTested: [],
-      arrDone: []
+      arrDone: [],
     };
   },
   methods: {
     // for modal
-        showModal() {
-        this.$refs['my-modal'].show()
-      },
-      hideModal() {
-        this.$refs['my-modal'].hide()
-      },
-      toggleModal() {
-        // We pass the ID of the button that we want to return focus to
-        // when the modal has hidden
-        this.$refs['my-modal'].toggle('#toggle-btn')
-      },
-    //add new tasks method
-     add: function() {
-        const data = {
-          name: this.form.storyTitle,
-          type: this.form.storyType,
-          storyPts: this.form.storyPts,
-          description: this.form.storyDesc,
-          priority: this.form.storyPriority,
-          boardId: this.$route.params.id,
-        };
-        console.log('task data:' + data);
-        StoriesDataService.create(data)
-          .then((response) => {
-            console.log(response.data);
-            this.backlogAPI.push(response.data)
-            this.form.newTask = "";
-          })
-          .catch(e => {
-            console.log(e);
-            this.errMessage = 'Erreur';
-          })
+    showModal() {
+      this.$refs["my-modal"].show();
     },
-    deleteStory: function(id, index) {
+    hideModal() {
+      this.$refs["my-modal"].hide();
+    },
+    toggleModal() {
+      // We pass the ID of the button that we want to return focus to
+      // when the modal has hidden
+      this.$refs["my-modal"].toggle("#toggle-btn");
+    },
+    //add new tasks method
+    add: function () {
+      const data = {
+        name: this.form.storyTitle,
+        type: this.form.storyType,
+        storyPts: this.form.storyPts,
+        description: this.form.storyDesc,
+        priority: this.form.storyPriority,
+        boardId: this.$route.params.id,
+      };
+      console.log("task data:" + data);
+      StoriesDataService.create(data)
+        .then((response) => {
+          console.log(response.data);
+          this.backlogAPI.push(response.data);
+          this.form.newTask = "";
+        })
+        .catch((e) => {
+          console.log(e);
+          this.errMessage = "Erreur";
+        });
+    },
+    deleteStory: function (id, index) {
       StoriesDataService.delete(id)
-          .then(response => {
-            console.log("In delete..." + response);
-            this.backlogAPI.splice(index, 1).push(response.data);
-          }).catch(e => {
-            console.log(e);
-          })
+        .then((response) => {
+          console.log("In delete..." + response);
+          this.backlogAPI.splice(index, 1).push(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
     // TODO
-    update: function(id) {
+    update: function (id) {
       const data = {
-        status: this.status
-      }
+        status: this.status,
+      };
       StoriesDataService.update(id, data)
-        .then(response => {
-          console.log("Updating...." + response)
-        }).catch(e => {
-            console.log(e);
-          })
-    }
+        .then((response) => {
+          console.log("Updating...." + response);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
   },
   mounted() {
-    console.log("route param:" + this.$route.params.id)
+    console.log("route param:" + this.$route.params.id);
     ScrumboardDataService.get(this.$route.params.id)
       .then((response) => {
         this.scrumboards = response.data;
         console.log("scrum" + response.data);
-      }).catch(e => console.log(e));
+      })
+      .catch((e) => console.log(e));
     StoriesDataService.getAllFromScrum(this.$route.params.id)
-          .then((response2) => {
-            this.backlogAPI = response2.data
-            console.log("stories" + JSON.stringify(this.backlogAPI))
-      }).catch(e => console.log(e));
-  }
+      .then((response2) => {
+        this.backlogAPI = response2.data;
+        console.log("stories" + JSON.stringify(this.backlogAPI));
+      })
+      .catch((e) => console.log(e));
+  },
 };
 </script>
 

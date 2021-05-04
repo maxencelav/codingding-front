@@ -7,7 +7,7 @@ import Profile from '@/components/Profile.vue'
 import UserDirectory from '@/components/UserDirectory.vue'
 import Scrumboard from '@/components/Scrumboard.vue'
 import Scrumboards from '@/components/Scrumboards.vue'
-// import AddStory from '@components/AddStory.vue'
+import Story from '@/components/Story.vue'
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
@@ -26,7 +26,8 @@ export default new Router({
         { path: '/profile/:id', name: 'Profile', component: Profile },
         { path: '/profile/:id/edit', name: 'Profile', component: Profile },
         { path: '/scrumboards', name: 'Scrumboards', component: Scrumboards },
-        { path: '/scrumboards/:id', name: 'Scrumboard', component: Scrumboard }
+        { path: '/scrumboards/:id', name: 'Scrumboard', component: Scrumboard },
+        { path: '/story/:id', name: 'Story', component: Story }
     ]
 })
 
