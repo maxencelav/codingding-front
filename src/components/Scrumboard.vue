@@ -99,6 +99,9 @@
 <script>
 //import draggable
 import draggable from "vuedraggable";
+import ScrumboardDataService from "../services/ScrumboardDataService";
+//import axios from 'axios';
+
 export default {
   name: "kanban-board",
   components: {
@@ -107,6 +110,7 @@ export default {
   },
   data() {
     return {
+      scrumboards: [],
       // for new tasks
       newTask: "",
       // 4 arrays to keep track of our 4 statuses
@@ -128,7 +132,26 @@ export default {
         this.arrBackLog.push({ name: this.newTask });
         this.newTask = "";
       }
+    },
+    getAll() {
+        
+    },
+    deleteScrumboard(id, index) {
+        ScrumboardDataService.delete(id)
+          .then(response => {
+            console.log("In delete..." + response);
+            this.scrumboards.splice(index, 1).push(response.data);
+          }).catch(e => {
+            console.log(e);
+          })
     }
+  }, 
+  mounted() {
+    ScrumboardDataService.getAll()
+      .then((response) => {
+        this.scrumboards = response.data;
+        console.log(response.data);
+      });
   }
 };
 </script>
