@@ -7,6 +7,7 @@ import Profile from '@/components/Profile.vue'
 import UserDirectory from '@/components/UserDirectory.vue'
 import Scrumboard from '@/components/Scrumboard.vue'
 import Scrumboards from '@/components/Scrumboards.vue'
+// import AddStory from '@components/AddStory.vue'
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
