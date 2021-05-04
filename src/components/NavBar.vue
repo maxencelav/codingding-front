@@ -46,8 +46,12 @@ export default {
     login() {
       var cookies = this.$cookies.get('token');
       var decoded = jwt_decode(cookies);
-      alert(decoded);
-      console.log(decoded);
+      localStorage.setItem("user", JSON.stringify(decoded))
+      this.user = JSON.stringify(decoded);
+      console.log(this.user)
+    },
+    logout() {
+      localStorage.removeItem('user');
     }
   }
 };
