@@ -4,23 +4,23 @@ class ScrumboardDataService {
 
   /* OK */
   getAll() {
-    return http.get("/scrumboard");
+    return http.get("/scrumboards");
   }
 
   get(id) {
-    return http.get(`/scrumboard/${id}`);
+    return http.get(`/scrumboards/${id}`);
   }
 
   create(data) {
-    return http.post("/scrumboard", data);
+    return http.post("/scrumboards", data);
   }
 
   update(id, data) {
-    return http.put(`/scrumboard/${id}`, data);
+    return http.put(`/scrumboards/${id}`, data);
   }
 
   delete(id) {
-    return http.delete(`/scrumboard/${id}`);
+    return http.delete(`/scrumboards/${id}`);
   }
 
 }

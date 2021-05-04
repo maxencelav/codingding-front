@@ -60,36 +60,7 @@ export default {
           sortable: false,
         },
       ],
-      usersAPI:[],
-      users: [
-        {
-          _id:"AYOAO",
-          firstName: "Alan",
-          lastName: "Lelia",
-          profilePic: "https://picsum.photos/200?random=1",
-          classYear: 3,
-          classStatus: "TP",
-          classLocation: "Cergy",
-        },
-        {
-          _id:"WUXEO",
-          firstName: "Mason",
-          lastName: "Bess",
-          profilePic: "https://picsum.photos/200?random=2",
-          classYear: 1,
-          classStatus: "TP",
-          classLocation: "Cergy",
-        },
-        {
-          _id:"EBBDS",
-          firstName: "Vera",
-          lastName: "Leona",
-          profilePic: "https://picsum.photos/200?random=3",
-          classYear: 2,
-          classStatus: "TP",
-          classLocation: "Paris",
-        },
-      ],
+      usersAPI:[]
     };
   },
   mounted() {
@@ -97,7 +68,7 @@ export default {
       .then((response) => {
         this.usersAPI = response.data;
         console.log(response.data);
-      });
+      }).catch(e => console.log(e));
   }
 };
 </script>

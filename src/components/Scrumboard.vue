@@ -1,5 +1,6 @@
 <template>
   <div class="container mt-5">
+    <h2> {{scrumboards.name}}</h2>
     <div class="row">
       <div class="col form-inline">
         <b-form-input
@@ -15,16 +16,16 @@
     <div class="row mt-5">
       <div class="col-3">
         <div class="p-2 alert alert-secondary">
-          <h3>Back Log</h3>
+          <h3>User Stories</h3>
           <!-- Backlog draggable component. Pass arrBackLog to list prop -->
           <draggable
             class="list-group kanban-column"
-            :list="arrBackLog"
+            :list="backlogAPI"
             group="tasks"
           >
             <div
               class="list-group-item"
-              v-for="element in arrBackLog"
+              v-for="element in backlogAPI"
               :key="element.name"
             >
               {{ element.name }}
@@ -55,7 +56,7 @@
 
       <div class="col-3">
         <div class="p-2 alert alert-warning">
-          <h3>Testing</h3>
+          <h3>Doing</h3>
           <!-- Testing draggable component. Pass arrTested to list prop -->
           <draggable
             class="list-group kanban-column"
@@ -100,10 +101,11 @@
 //import draggable
 import draggable from "vuedraggable";
 import ScrumboardDataService from "../services/ScrumboardDataService";
+import StoriesDataService from "../services/StoriesDataServices"
 //import axios from 'axios';
 
 export default {
-  name: "kanban-board",
+  name: "Scrumboard",
   components: {
     //import draggable as a component
     draggable
@@ -111,6 +113,7 @@ export default {
   data() {
     return {
       scrumboards: [],
+      backlogAPI: [],
       // for new tasks
       newTask: "",
       // 4 arrays to keep track of our 4 statuses
@@ -132,26 +135,20 @@ export default {
         this.arrBackLog.push({ name: this.newTask });
         this.newTask = "";
       }
-    },
-    getAll() {
-        
-    },
-    deleteScrumboard(id, index) {
-        ScrumboardDataService.delete(id)
-          .then(response => {
-            console.log("In delete..." + response);
-            this.scrumboards.splice(index, 1).push(response.data);
-          }).catch(e => {
-            console.log(e);
-          })
     }
-  }, 
+  },
   mounted() {
-    ScrumboardDataService.getAll()
+    console.log("route param:" + this.$route.params.id)
+    ScrumboardDataService.get(this.$route.params.id)
       .then((response) => {
         this.scrumboards = response.data;
-        console.log(response.data);
-      });
+        console.log("scrum" + response.data);
+      }).catch(e => console.log(e));
+    StoriesDataService.getAllFromScrum(this.$route.params.id)
+          .then((response2) => {
+            this.backlogAPI = response2.data
+            console.log("stories" + JSON.stringify(this.backlogAPI))
+      }).catch(e => console.log(e));
   }
 };
 </script>
@@ -159,6 +156,6 @@ export default {
 <style>
 /* light stylings for the kanban columns */
 .kanban-column {
-  min-height: 300px;
+  min-height: 500px;
 }
 </style>
