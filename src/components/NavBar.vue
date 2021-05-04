@@ -9,7 +9,7 @@
         <b-navbar-nav>
           <b-nav-item to="/achievements">Achievements</b-nav-item>
           <b-nav-item to="/planning" disabled>Agenda</b-nav-item>
-          <b-nav-item to="/scrum" disabled>Scrum</b-nav-item>
+          <b-nav-item to="/scrumboard">Scrum</b-nav-item>
           <b-nav-item to="/users">Annuaire</b-nav-item>
           <b-nav-item to="/wishlist" disabled>Wishlist</b-nav-item>
         </b-navbar-nav>
@@ -20,13 +20,16 @@
             <b-button pill variant="primary" v-on:click="login()">
               <b-icon-google></b-icon-google>
             </b-button>
+            <b-button pill variant="primary" v-on:click="logout()">
+              <b-icon-google></b-icon-google>
+            </b-button>
           </b-nav-item>
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template #button-content>
               <b-avatar></b-avatar>
             </template>
-            <b-dropdown-item href="#">Profil</b-dropdown-item>
+            <b-dropdown-item href="#">{{user.email}}</b-dropdown-item>
             <b-dropdown-item href="http://localhost:4000/auth/google" target="_blank">Se connecter</b-dropdown-item>
             <b-dropdown-item href="http://localhost:4000/auth/logout" target="_blank">Se déconnecter</b-dropdown-item>
           </b-nav-item-dropdown>
@@ -41,13 +44,21 @@ import jwt_decode from 'jwt-decode';
 
 export default {
   name: "NavBar",
-  currentUser: {},
+  data() {
+    return {
+      user: {}
+    };
+  },
   methods: {
     login() {
       var cookies = this.$cookies.get('token');
       var decoded = jwt_decode(cookies);
-      alert(decoded);
-      console.log(decoded);
+      localStorage.setItem("user", JSON.stringify(decoded))
+      this.user = JSON.stringify(decoded);
+      console.log(this.user)
+    },
+    logout() {
+      localStorage.removeItem('user');
     }
   }
 };
