@@ -65,7 +65,7 @@
 
       <div class="col-3">
         <div class="p-2 alert alert-primary">
-          <h3>In Progress</h3>
+          <h3>To Do</h3>
           <!-- In Progress draggable component. Pass arrInProgress to list prop -->
           <draggable
             class="list-group kanban-column"
@@ -86,7 +86,7 @@
 
       <div class="col-3">
         <div class="p-2 alert alert-warning">
-          <h3>Doing</h3>
+          <h3>In Progress</h3>
           <!-- Testing draggable component. Pass arrTested to list prop -->
           <draggable
             class="list-group kanban-column"
