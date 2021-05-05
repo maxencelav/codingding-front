@@ -1,9 +1,11 @@
 <template>
   <div class="container mt-5">
     <h2>{{ scrumboards.name }}</h2>
+     <p class="lead">{{scrumboards.key}} - {{scrumboards.type}}</p>
     <div class="row">
       <div class="col form-inline">
         <b-button id="show-btn" @click="showModal">Ajouter</b-button>
+        <b-button id="show-btn" @click="generateKey">Generate Key</b-button>
         <!-- BEGIN MODAL -->
         <b-modal ref="my-modal" hide-footer title="Ajouter une story/tâche">
           <div class="d-block text-center">
@@ -216,10 +218,17 @@ export default {
       // when the modal has hidden
       this.$refs["my-modal"].toggle("#toggle-btn");
     },
+    generateKey: function() {
+        const key = this.scrumboards.key;
+        const number = this.backlogAPI.length + 1;
+        const strKey = key + number;
+        return strKey;
+    },
     //add new tasks method
     add: function () {
       const data = {
         name: this.form.storyTitle,
+        key: this.generateKey(),
         type: this.form.storyType,
         storyPts: this.form.storyPts,
         description: this.form.storyDesc,
@@ -276,6 +285,8 @@ export default {
         console.log("stories" + JSON.stringify(this.backlogAPI));
       })
       .catch((e) => console.log(e));
+
+
   },
 };
 </script>
