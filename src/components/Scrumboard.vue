@@ -5,7 +5,6 @@
     <div class="row">
       <div class="col form-inline">
         <b-button id="show-btn" @click="showModal">Ajouter</b-button>
-        <b-button id="show-btn" @click="generateKey">Generate Key</b-button>
         <!-- BEGIN MODAL -->
         <b-modal ref="my-modal" hide-footer title="Ajouter une story/tâche">
           <div class="d-block text-center">

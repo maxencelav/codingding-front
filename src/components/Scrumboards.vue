@@ -4,10 +4,9 @@
       <h1 class="display-1">Scrumboards</h1>
       <p class="lead">Retrouvez ici la liste de vos scrumboards.</p>
       <b-button id="show-btn" @click="showModal">Ajouter</b-button>
-      <!-- BEGIN MODAL -->
-        <b-modal ref="my-modal" hide-footer title="Ajouter une story/tâche">
+
+        <b-modal ref="my-modal" hide-footer title="Ajouter la story/tâche">
           <div class="d-block text-center">
-            <div v-if="!isEditing">
             <b-form @submit="add">
               <b-form-input
                 v-model="form.scrumTitle"
@@ -32,41 +31,41 @@
               <b-button type="submit" variant="primary" class="ml-3">Add</b-button>
             </b-form>
             </div>
-            <div v-else>
-               <b-form @submit="add">
+          </b-modal>
+
+           <b-modal ref="my-modal-edit" hide-footer title="Modifier la story/tâche">
+            <div class="d-block text-center">
+              <b-form @submit="saveEdit">
               <b-form-input
-                v-model="form.scrumTitle"
+                v-model="editForm.scrumTitle"
                 required
                 placeholder="Nom"
                 value="Hello"
-              >hello</b-form-input>
+              ></b-form-input>
               <b-form-input
-                v-model="form.scrumType"
+                v-model="editForm.scrumType"
                 required
                 placeholder="Type"
               ></b-form-input>
               <b-form-input
-                v-model="form.scrumDesc"
+                v-model="editForm.scrumDesc"
                 required
                 placeholder="Description"
               ></b-form-input>
               <b-form-input
-                v-model="form.scrumKey"
+                v-model="editForm.scrumKey"
                 required
                 placeholder="Clé"
               ></b-form-input>
-              <b-button type="submit" variant="primary" class="ml-3"
-                >Modifier</b-button
-              >
+              <b-button type="submit" variant="primary" class="ml-3">Modifier</b-button>
             </b-form>
             </div>
-          </div>
         </b-modal>
-        <!-- END MODAL -->
+
       <b-table striped hover :items="scrumAPI" :fields="scrumFields">
         <template #cell(_id)="data">
             <b-button variant="primary" :to="'/scrumboard/'+data.value"><b-icon-search></b-icon-search></b-button>
-            <b-button variant="primary" @click="edit"><b-icon-pencil-square></b-icon-pencil-square></b-button>
+            <b-button variant="primary" @click="edit(); getScrumId(data.value);"><b-icon-pencil-square></b-icon-pencil-square></b-button>
             <b-button variant="danger" v-on:click="deleteScrum(`${data.value}`, index)"><b-icon-x></b-icon-x></b-button>
         </template>
       </b-table>
@@ -80,13 +79,20 @@ export default {
   name: "Scrumboards",
   data() {
     return {
-    isEditing: false,
+    title: '',
     form: {
-        scrumTitle: "",
-        scrumKey: "",
-        scrumType: "",
-        scrumDesc: ""
-    },  
+      scrumTitle: "",
+      scrumKey: "",
+      scrumType: "",
+      scrumDesc: ""
+    },
+    editForm: {
+      scrumId: "",
+      scrumTitle: "",
+      scrumKey: "",
+      scrumType: "",
+      scrumDesc: ""
+    },
     scrumAPI:[],
     scrumFields: [
         {
@@ -148,9 +154,13 @@ export default {
         });
     },
     edit: function() {
-      this.$refs["my-modal"].show();
-      this.isEditing = true;
-      this.form.scrumTitle = this.scrumAPI.name
+      this.$refs["my-modal-edit"].show();
+      console.log('data in edit fct' + JSON.stringify(this.scrumAPI));
+      // this.editForm.scrumTitle == "Laurent"
+    },
+    getScrumId: function(id) {
+      console.log("id when click edit :" + id);
+      return id;
     },
     saveEdit: function() {
       ScrumboardDataService.update()
@@ -172,6 +182,16 @@ export default {
         this.scrumAPI = response.data;
         console.log("all scrums:" + JSON.stringify(response.data));
       }).catch(e => console.log(e));
+  },
+  beforeUpdate() {
+
+  },
+  updated() {
+    this.$nextTick(function () {
+      this.scrumAPI.filter(el => {
+        console.log('UPDATED : element in filter :' + JSON.stringify(el))
+    })
+  })
   }
 };
 </script>

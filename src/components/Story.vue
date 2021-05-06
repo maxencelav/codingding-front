@@ -14,10 +14,10 @@
             <b-badge v-else-if="story.priority == 'Moyenne'" variant="success">Moyenne</b-badge>
             <b-badge v-else-if="story.priority == 'Haute'" variant="danger">Haute</b-badge>
             <b-badge v-else variant="secondary">Inconnue</b-badge>
+        
           </p>
         </b-col>
       </b-row>
-
       <b-row>
         <b-col fluid="sm">
           <h2>Description</h2>
