@@ -73,7 +73,7 @@
                label="Type :">
                <b-form-select 
               v-model="editForm.scrumType" 
-              :options="options">
+              :options="scrumboardTypeOptions">
               </b-form-select>
                   </b-form-group>
               <b-form-group
@@ -110,6 +110,7 @@
             class="list-group kanban-column"
             :list="backlogAPI"
             group="tasks"
+            :move="storyMove"
           >
             <div
               class="list-group-item"
@@ -146,6 +147,7 @@
             class="list-group kanban-column"
             :list="arrInProgress"
             group="tasks"
+            :move="storyMove"
           >
             <div
               class="list-group-item"
@@ -178,6 +180,7 @@
             class="list-group kanban-column"
             :list="arrTested"
             group="tasks"
+            :move="storyMove"
           >
             <div
               class="list-group-item"
@@ -204,6 +207,7 @@
             class="list-group kanban-column"
             :list="arrDone"
             group="tasks"
+             :move="storyMove"
           >
             <div
               class="list-group-item"
@@ -243,14 +247,19 @@ export default {
       scrumboards: [],
       backlogAPI: [],
       options: [
-      { value: 'US', text: 'User Story'},
+      { value: 'User Story', text: 'User Story'},
       { value: 'Epic', text: 'Epic'},
-      { value: 'Task', text: 'Tâche'},
+      { value: 'Tâche', text: 'Tâche'},
     ],
     priorityOptions: [
       { value: 'Basse', text: 'Basse'},
       { value: 'Moyenne', text: 'Moyenne'},
       { value: 'Haute', text: 'Haute'},
+    ],
+    scrumboardTypeOptions: [
+      { value: null, text:'Type de projet', disabled: true},
+      { value: 'TP', text: 'TP'},
+      { value: 'Projet personnel', text: 'Projet personnel'}
     ],
       // for new tasks
       form: {
@@ -332,6 +341,24 @@ export default {
           this.errMessage = "Erreur";
         });
     },
+    saveEdit: function() {
+      const data = {
+        name: this.editForm.scrumTitle,
+        key: this.editForm.scrumKey,
+        type: this.editForm.scrumType,
+        description: this.editForm.scrumDesc,
+      };
+      console.log("task data:" + data);
+      ScrumboardDataService.update(this.scrumboards._id, data)
+        .then((response) => {
+          console.log('updated data: ' + JSON.stringify(response.data));
+          location.reload();
+        })
+        .catch((e) => {
+          console.log(e);
+          this.errMessage = "Erreur";
+        });
+    },
     deleteStory: function (id, index) {
       StoriesDataService.delete(id)
         .then((response) => {
@@ -342,18 +369,11 @@ export default {
           console.log(e);
         });
     },
-    // TODO
-    update: function (id) {
-      const data = {
-        status: this.status,
-      };
-      StoriesDataService.update(id, data)
-        .then((response) => {
-          console.log("Updating...." + response);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    // TO DO
+    storyMove: function (evt) {
+      console.log(evt.draggedContext)
+      console.log('story id : ' + evt.draggedContext.element._id)
+      return true;
     },
   },
   mounted() {
@@ -371,7 +391,7 @@ export default {
     StoriesDataService.getAllFromScrum(this.$route.params.id)
       .then((response2) => {
         this.backlogAPI = response2.data;
-        console.log("stories" + JSON.stringify(this.backlogAPI));
+        console.log(JSON.stringify(this.backlogAPI));
       })
       .catch((e) => console.log(e));
   },
