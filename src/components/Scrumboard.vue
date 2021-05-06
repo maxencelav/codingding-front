@@ -101,13 +101,13 @@
           <draggable
             id="userstories-col"
             class="list-group kanban-column"
-            :list="backlogAPI"
+            :list="arrUserStories"
             group="tasks"
             :move="storyMove"
           >
             <div
               class="list-group-item"
-              v-for="(element, index) in backlogAPI"
+              v-for="(element, index) in arrUserStories"
               :key="element.name"
             >
               <b-row align-h="between">
@@ -139,6 +139,44 @@
           <draggable
             id="todo-col"
             class="list-group kanban-column"
+            :list="arrToDo"
+            group="tasks"
+            :move="storyMove"
+          >
+            <div
+              class="list-group-item"
+              v-for="(element, index) in arrToDo"
+              :key="element.name"
+            >
+              <b-row align-h="between">
+                <b-col cols="7" class="text-break">
+                  {{ element.name }}
+                </b-col>
+                <b-col cols="5" class="text-align-right">
+                  <b-button-group size="sm">
+                    <b-button
+                      variant="danger"
+                      v-on:click="deleteStory(`${element._id}`, index)"
+                      ><b-icon-x></b-icon-x
+                    ></b-button>
+                    <b-button variant="primary" :to="'/story/' + element._id"
+                      ><b-icon-card-heading></b-icon-card-heading
+                    ></b-button>
+                  </b-button-group>
+                </b-col>
+              </b-row>
+            </div>
+          </draggable>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="p-2 alert alert-warning">
+          <h3>In Progress</h3>
+          <!-- Testing draggable component. Pass arrToDo to list prop -->
+          <draggable
+            id="inprogress-col"
+            class="list-group kanban-column"
             :list="arrInProgress"
             group="tasks"
             :move="storyMove"
@@ -148,47 +186,23 @@
               v-for="(element, index) in arrInProgress"
               :key="element.name"
             >
-              {{ element.name }}
-              <b-button
-                variant="danger"
-                class="ml-3"
-                v-on:click="deleteStory(`${element._id}`, index)"
-                ><b-icon-x></b-icon-x
-              ></b-button>
-              <b-button
-                variant="danger"
-                class="ml-3"
-                v-on:click="deleteStory(`${element._id}`, index)"
-                ><b-icon-card-heading></b-icon-card-heading
-              ></b-button>
-            </div>
-          </draggable>
-        </div>
-      </div>
-
-      <div class="col-3">
-        <div class="p-2 alert alert-warning">
-          <h3>In Progress</h3>
-          <!-- Testing draggable component. Pass arrTested to list prop -->
-          <draggable
-            id="inprogress-col"
-            class="list-group kanban-column"
-            :list="arrTested"
-            group="tasks"
-            :move="storyMove"
-          >
-            <div
-              class="list-group-item"
-              v-for="(element, index) in arrTested"
-              :key="element.name"
-            >
-              {{ element.name }}
-              <b-button
-                variant="danger"
-                class="ml-3"
-                v-on:click="deleteStory(`${element._id}`, index)"
-                ><b-icon-x></b-icon-x
-              ></b-button>
+              <b-row align-h="between">
+                <b-col cols="7" class="text-break">
+                  {{ element.name }}
+                </b-col>
+                <b-col cols="5" class="text-align-right">
+                  <b-button-group size="sm">
+                    <b-button
+                      variant="danger"
+                      v-on:click="deleteStory(`${element._id}`, index)"
+                      ><b-icon-x></b-icon-x
+                    ></b-button>
+                    <b-button variant="primary" :to="'/story/' + element._id"
+                      ><b-icon-card-heading></b-icon-card-heading
+                    ></b-button>
+                  </b-button-group>
+                </b-col>
+              </b-row>
             </div>
           </draggable>
         </div>
@@ -210,13 +224,23 @@
               v-for="(element, index) in arrDone"
               :key="element.name"
             >
-              {{ element.name }}
-              <b-button
-                variant="danger"
-                class="ml-3"
-                v-on:click="deleteStory(`${element._id}`, index)"
-                ><b-icon-x></b-icon-x
-              ></b-button>
+              <b-row align-h="between">
+                <b-col cols="7" class="text-break">
+                  {{ element.name }}
+                </b-col>
+                <b-col cols="5" class="text-align-right">
+                  <b-button-group size="sm">
+                    <b-button
+                      variant="danger"
+                      v-on:click="deleteStory(`${element._id}`, index)"
+                      ><b-icon-x></b-icon-x
+                    ></b-button>
+                    <b-button variant="primary" :to="'/story/' + element._id"
+                      ><b-icon-card-heading></b-icon-card-heading
+                    ></b-button>
+                  </b-button-group>
+                </b-col>
+              </b-row>
             </div>
           </draggable>
         </div>
@@ -273,14 +297,9 @@ export default {
         scrumDesc: "",
       },
       // 4 arrays to keep track of our 4 statuses
-      arrBackLog: [
-        { name: "Code Sign Up Page" },
-        { name: "Test Dashboard" },
-        { name: "Style Registration" },
-        { name: "Help with Designs" },
-      ],
+      arrUserStories: [],
+      arrToDo: [],
       arrInProgress: [],
-      arrTested: [],
       arrDone: [],
     };
   },
@@ -367,12 +386,12 @@ export default {
     },
     // TO DO
     storyMove: function (evt, movement) {
-      console.log(evt.draggedContext.element)
+      console.log(evt.draggedContext.element);
       let storyId = evt.draggedContext.element._id;
       let pageColId = movement.rootEl["id"];
       let apiColId = 0;
 
-      switch(pageColId){
+      switch (pageColId) {
         case "userstories-col":
           apiColId = 0;
           break;
@@ -398,12 +417,12 @@ export default {
         description: evt.draggedContext.element.description,
         priority: evt.draggedContext.element.priority,
         boardId: evt.draggedContext.element.boardId,
-        status: apiColId
-      }
+        status: apiColId,
+      };
 
       StoriesDataService.update(storyId, data)
-      .then((response) => {
-          console.log("updated data dnd: " + JSON.stringify(response.data));      
+        .then((response) => {
+          console.log("updated data dnd: " + JSON.stringify(response.data));
         })
         .catch((e) => {
           console.log(e);
@@ -417,7 +436,7 @@ export default {
     ScrumboardDataService.get(this.$route.params.id)
       .then((response) => {
         this.scrumboards = response.data;
-        console.log("this.scrumboards" + JSON.stringify(this.scrumboards));
+
         this.editForm.scrumTitle = this.scrumboards.name;
         this.editForm.scrumDesc = this.scrumboards.description;
         this.editForm.scrumKey = this.scrumboards.key;
@@ -427,7 +446,27 @@ export default {
     StoriesDataService.getAllFromScrum(this.$route.params.id)
       .then((response2) => {
         this.backlogAPI = response2.data;
-        console.log(JSON.stringify(this.backlogAPI));
+        console.log(this.backlogAPI);
+
+        this.backlogAPI.forEach((story) => {
+          switch (story.status) {
+            case "0":
+              this.arrUserStories.push(story);
+              break;
+            case "1":
+              this.arrToDo.push(story);
+              break;
+            case "2":
+              this.arrInProgress.push(story);
+              break;
+            case "3":
+              this.arrDone.push(story);
+              break;
+            default:
+              this.arrUserStories.push(story);
+              break;
+          }
+        });
       })
       .catch((e) => console.log(e));
   },
