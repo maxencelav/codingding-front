@@ -11,6 +11,7 @@
 
 <script>
 import jwt_decode from 'jwt-decode';
+import Vue from 'vue';
 export default {
   name: "Home",
   methods: {
@@ -33,7 +34,7 @@ export default {
     }
   },
   created() {
-    this.getUserDetails();
+    this.user = Vue.getCurrentUser();
   }
 };
 </script>
