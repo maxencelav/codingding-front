@@ -4,8 +4,10 @@
     <p class="lead">{{ scrumboards.key }} - {{ scrumboards.type }}</p>
     <div class="row">
       <div class="col form-inline">
-        <b-button id="show-btn" @click="showModal">Ajouter</b-button>
-        <b-button id="show-btn" @click="showEditModal">Modifier</b-button>
+            <b-button-group size="lg">
+        <b-button variant="primary" id="show-btn" @click="showModal"><b-icon-plus-circle-fill></b-icon-plus-circle-fill> Ajouter</b-button>
+        <b-button id="show-btn" @click="showEditModal"><b-icon-pencil></b-icon-pencil> Modifier</b-button>
+            </b-button-group>
         <!-- BEGIN MODAL -->
         <b-modal ref="my-modal" hide-footer title="Ajouter une story/tâche">
           <div class="d-block">
@@ -344,16 +346,14 @@ export default {
         priority: this.form.storyPriority,
         boardId: this.$route.params.id,
       };
-      console.log("task data:" + data);
+
       StoriesDataService.create(data)
         .then((response) => {
-          console.log(response.data);
           this.backlogAPI.push(response.data);
           this.form.newTask = "";
         })
         .catch((e) => {
-          console.log(e);
-          this.errMessage = "Erreur";
+          this.errMessage = "Erreur : " + e ;
         });
     },
     saveEdit: function () {
@@ -363,7 +363,6 @@ export default {
         type: this.editForm.scrumType,
         description: this.editForm.scrumDesc,
       };
-      console.log("task data:" + data);
       ScrumboardDataService.update(this.scrumboards._id, data)
         .then((response) => {
           console.log("updated data: " + JSON.stringify(response.data));
@@ -377,7 +376,6 @@ export default {
     deleteStory: function (id, index) {
       StoriesDataService.delete(id)
         .then((response) => {
-          console.log("In delete..." + response);
           this.backlogAPI.splice(index, 1).push(response.data);
         })
         .catch((e) => {
@@ -446,7 +444,6 @@ export default {
     StoriesDataService.getAllFromScrum(this.$route.params.id)
       .then((response2) => {
         this.backlogAPI = response2.data;
-        console.log(this.backlogAPI);
 
         this.backlogAPI.forEach((story) => {
           switch (story.status) {
