@@ -109,7 +109,7 @@
           >
             <div
               class="list-group-item"
-              v-for="(element, index) in arrUserStories"
+              v-for="(element) in arrUserStories"
               :key="element.name"
             >
               <b-row align-h="between">
@@ -118,11 +118,6 @@
                 </b-col>
                 <b-col cols="5" class="text-align-right">
                   <b-button-group size="sm">
-                    <b-button
-                      variant="danger"
-                      v-on:click="deleteStory(`${element._id}`, index)"
-                      ><b-icon-x></b-icon-x
-                    ></b-button>
                     <b-button variant="primary" :to="'/story/' + element._id"
                       ><b-icon-card-heading></b-icon-card-heading
                     ></b-button>
@@ -147,7 +142,7 @@
           >
             <div
               class="list-group-item"
-              v-for="(element, index) in arrToDo"
+              v-for="(element) in arrToDo"
               :key="element.name"
             >
               <b-row align-h="between">
@@ -156,11 +151,6 @@
                 </b-col>
                 <b-col cols="5" class="text-align-right">
                   <b-button-group size="sm">
-                    <b-button
-                      variant="danger"
-                      v-on:click="deleteStory(`${element._id}`, index)"
-                      ><b-icon-x></b-icon-x
-                    ></b-button>
                     <b-button variant="primary" :to="'/story/' + element._id"
                       ><b-icon-card-heading></b-icon-card-heading
                     ></b-button>
@@ -185,7 +175,7 @@
           >
             <div
               class="list-group-item"
-              v-for="(element, index) in arrInProgress"
+              v-for="(element) in arrInProgress"
               :key="element.name"
             >
               <b-row align-h="between">
@@ -194,11 +184,6 @@
                 </b-col>
                 <b-col cols="5" class="text-align-right">
                   <b-button-group size="sm">
-                    <b-button
-                      variant="danger"
-                      v-on:click="deleteStory(`${element._id}`, index)"
-                      ><b-icon-x></b-icon-x
-                    ></b-button>
                     <b-button variant="primary" :to="'/story/' + element._id"
                       ><b-icon-card-heading></b-icon-card-heading
                     ></b-button>
@@ -223,7 +208,7 @@
           >
             <div
               class="list-group-item"
-              v-for="(element, index) in arrDone"
+              v-for="(element) in arrDone"
               :key="element.name"
             >
               <b-row align-h="between">
@@ -232,11 +217,6 @@
                 </b-col>
                 <b-col cols="5" class="text-align-right">
                   <b-button-group size="sm">
-                    <b-button
-                      variant="danger"
-                      v-on:click="deleteStory(`${element._id}`, index)"
-                      ><b-icon-x></b-icon-x
-                    ></b-button>
                     <b-button variant="primary" :to="'/story/' + element._id"
                       ><b-icon-card-heading></b-icon-card-heading
                     ></b-button>
@@ -349,8 +329,7 @@ export default {
 
       StoriesDataService.create(data)
         .then((response) => {
-          this.backlogAPI.push(response.data);
-          this.form.newTask = "";
+          this.arrUserStories.push(response.data);
         })
         .catch((e) => {
           this.errMessage = "Erreur : " + e ;
@@ -371,15 +350,6 @@ export default {
         .catch((e) => {
           console.log(e);
           this.errMessage = "Erreur";
-        });
-    },
-    deleteStory: function (id, index) {
-      StoriesDataService.delete(id)
-        .then((response) => {
-          this.backlogAPI.splice(index, 1).push(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
         });
     },
     // TO DO
@@ -428,10 +398,8 @@ export default {
         });
       return true;
     },
-  },
-  mounted() {
-    console.log("route param:" + this.$route.params.id);
-    ScrumboardDataService.get(this.$route.params.id)
+    updateScrumboard: function() {
+       ScrumboardDataService.get(this.$route.params.id)
       .then((response) => {
         this.scrumboards = response.data;
 
@@ -441,10 +409,15 @@ export default {
         this.editForm.scrumType = this.scrumboards.type;
       })
       .catch((e) => console.log(e));
-    StoriesDataService.getAllFromScrum(this.$route.params.id)
+    },
+    updateStories: function() {
+      StoriesDataService.getAllFromScrum(this.$route.params.id)
       .then((response2) => {
         this.backlogAPI = response2.data;
-
+        this.arrUserStories = []
+        this.arrToDo = []
+        this.arrInProgress = []
+        this.arrDone = []
         this.backlogAPI.forEach((story) => {
           switch (story.status) {
             case "0":
@@ -466,6 +439,12 @@ export default {
         });
       })
       .catch((e) => console.log(e));
+    }
+  },
+  mounted() {
+    console.log("route param:" + this.$route.params.id);
+    this.updateScrumboard();
+    this.updateStories();
   },
 };
 </script>
