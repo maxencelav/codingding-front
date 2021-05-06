@@ -33,14 +33,14 @@
 
           <b-list-group>
             <b-list-group-item button>
-              <b-icon-envelope-fill></b-icon-envelope-fill> {{ profile.email }}
+              <b-icon-envelope-fill></b-icon-envelope-fill> <a :href="'mailto:' + profile.email">{{ profile.email }}</a> 
             </b-list-group-item>
             <b-list-group-item
               button
               v-for="link in profile.gitHubLinks"
               v-bind:key="link"
             >
-              <b-icon-github></b-icon-github> {{ link }}
+              <b-icon-github></b-icon-github> <a :href="'https://github.com/' + link" target="_blank">{{ link }}</a>
             </b-list-group-item>
           </b-list-group>
         </b-col>
