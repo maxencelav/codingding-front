@@ -5,7 +5,7 @@
       lead="L'outil par la Coding pour la Coding"
     >
     </b-jumbotron>
-    <h3> Welcome {{user.lastName}}</h3>
+    <h2>Welcome {{user.firstName}}</h2>
   </div>
 </template>
 
@@ -13,11 +13,6 @@
 import jwt_decode from 'jwt-decode';
 export default {
   name: "Home",
-  data() {
-    return {
-      user: {}
-    };
-  },
   methods: {
     getUserDetails() {
       // get token from localstorage
