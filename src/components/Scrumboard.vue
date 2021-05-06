@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
     <h2>{{ scrumboards.name }}</h2>
-     <p class="lead">{{scrumboards.key}} - {{scrumboards.type}}</p>
+    <p class="lead">{{ scrumboards.key }} - {{ scrumboards.type }}</p>
     <div class="row">
       <div class="col form-inline">
         <b-button id="show-btn" @click="showModal">Ajouter</b-button>
@@ -10,47 +10,41 @@
         <b-modal ref="my-modal" hide-footer title="Ajouter une story/tâche">
           <div class="d-block">
             <b-form @submit="add">
-              <b-form-group
-              label="Nom :">
-              <b-form-input
-                v-model="form.storyTitle"
-                required
-                placeholder="Nom de la story/tâche"
-              ></b-form-input>
+              <b-form-group label="Nom :">
+                <b-form-input
+                  v-model="form.storyTitle"
+                  required
+                  placeholder="Nom de la story/tâche"
+                ></b-form-input>
               </b-form-group>
-              <b-form-group
-              label="Description :">
-               <b-form-textarea
-                id="textarea-no-resize"
-                v-model="form.storyDesc"
-                placeholder="Description de la story/tâche"
-                rows="3"
-                no-resize
-              ></b-form-textarea>
+              <b-form-group label="Description :">
+                <b-form-textarea
+                  id="textarea-no-resize"
+                  v-model="form.storyDesc"
+                  placeholder="Description de la story/tâche"
+                  rows="3"
+                  no-resize
+                ></b-form-textarea>
               </b-form-group>
-              <b-form-group
-              label="Type :">
-              <b-form-select 
-              v-model="form.storyType" 
-              :options="options">
-              </b-form-select>
+              <b-form-group label="Type :">
+                <b-form-select v-model="form.storyType" :options="options">
+                </b-form-select>
               </b-form-group>
-              <b-form-group
-              label="Story Points :">
-              <b-form-input
-                v-model="form.storyPts"
-                required
-                placeholder="Valeur de la story"
-              ></b-form-input>
+              <b-form-group label="Story Points :">
+                <b-form-input
+                  v-model="form.storyPts"
+                  required
+                  placeholder="Valeur de la story"
+                ></b-form-input>
               </b-form-group>
-              <b-form-group
-              label="Priorité :">
-             <b-form-select 
-              v-model="form.storyPriority" 
-              :options="priorityOptions">
-              </b-form-select>
+              <b-form-group label="Priorité :">
+                <b-form-select
+                  v-model="form.storyPriority"
+                  :options="priorityOptions"
+                >
+                </b-form-select>
               </b-form-group>
-                <b-button type="submit" variant="primary" class="ml-3"
+              <b-button type="submit" variant="primary" class="ml-3"
                 >Ajouter</b-button
               >
             </b-form>
@@ -59,46 +53,44 @@
         <!-- END MODAL -->
 
         <b-modal ref="my-modal-edit" hide-footer title="Modifier le scrumboard">
-            <div class="d-block">
-              <b-form @submit="saveEdit">
-                 <b-form-group
-               label="Nom :">
-              <b-form-input
-                v-model="editForm.scrumTitle"
-                required
-                placeholder="Nom du scrumboard"
-              ></b-form-input>
-                 </b-form-group>
-                <b-form-group
-               label="Type :">
-               <b-form-select 
-              v-model="editForm.scrumType" 
-              :options="scrumboardTypeOptions">
-              </b-form-select>
-                  </b-form-group>
-              <b-form-group
-               label="Description :">
-             <b-form-textarea
-                id="textarea-no-resize"
-                v-model="editForm.scrumDesc"
-                placeholder="Description du scrumboard"
-                rows="3"
-                no-resize
-              ></b-form-textarea>
+          <div class="d-block">
+            <b-form @submit="saveEdit">
+              <b-form-group label="Nom :">
+                <b-form-input
+                  v-model="editForm.scrumTitle"
+                  required
+                  placeholder="Nom du scrumboard"
+                ></b-form-input>
               </b-form-group>
-               <b-form-group
-               label="Clé :">
-              <b-form-input
-                v-model="editForm.scrumKey"
-                required
-                placeholder="Clé"
-              ></b-form-input>
-               </b-form-group>
-              <b-button type="submit" variant="primary" class="ml-3">Modifier</b-button>
+              <b-form-group label="Type :">
+                <b-form-select
+                  v-model="editForm.scrumType"
+                  :options="scrumboardTypeOptions"
+                >
+                </b-form-select>
+              </b-form-group>
+              <b-form-group label="Description :">
+                <b-form-textarea
+                  id="textarea-no-resize"
+                  v-model="editForm.scrumDesc"
+                  placeholder="Description du scrumboard"
+                  rows="3"
+                  no-resize
+                ></b-form-textarea>
+              </b-form-group>
+              <b-form-group label="Clé :">
+                <b-form-input
+                  v-model="editForm.scrumKey"
+                  required
+                  placeholder="Clé"
+                ></b-form-input>
+              </b-form-group>
+              <b-button type="submit" variant="primary" class="ml-3"
+                >Modifier</b-button
+              >
             </b-form>
-            </div>
+          </div>
         </b-modal>
-
       </div>
     </div>
     <div class="row mt-5">
@@ -107,6 +99,7 @@
           <h3>User Stories</h3>
           <!-- Backlog draggable component. Pass arrBackLog to list prop -->
           <draggable
+            id="userstories-col"
             class="list-group kanban-column"
             :list="backlogAPI"
             group="tasks"
@@ -144,6 +137,7 @@
           <h3>To Do</h3>
           <!-- In Progress draggable component. Pass arrInProgress to list prop -->
           <draggable
+            id="todo-col"
             class="list-group kanban-column"
             :list="arrInProgress"
             group="tasks"
@@ -177,6 +171,7 @@
           <h3>In Progress</h3>
           <!-- Testing draggable component. Pass arrTested to list prop -->
           <draggable
+            id="inprogress-col"
             class="list-group kanban-column"
             :list="arrTested"
             group="tasks"
@@ -204,10 +199,11 @@
           <h3>Done</h3>
           <!-- Done draggable component. Pass arrDone to list prop -->
           <draggable
+            id="done-col"
             class="list-group kanban-column"
             :list="arrDone"
             group="tasks"
-             :move="storyMove"
+            :move="storyMove"
           >
             <div
               class="list-group-item"
@@ -247,20 +243,20 @@ export default {
       scrumboards: [],
       backlogAPI: [],
       options: [
-      { value: 'User Story', text: 'User Story'},
-      { value: 'Epic', text: 'Epic'},
-      { value: 'Tâche', text: 'Tâche'},
-    ],
-    priorityOptions: [
-      { value: 'Basse', text: 'Basse'},
-      { value: 'Moyenne', text: 'Moyenne'},
-      { value: 'Haute', text: 'Haute'},
-    ],
-    scrumboardTypeOptions: [
-      { value: null, text:'Type de projet', disabled: true},
-      { value: 'TP', text: 'TP'},
-      { value: 'Projet personnel', text: 'Projet personnel'}
-    ],
+        { value: "User Story", text: "User Story" },
+        { value: "Epic", text: "Epic" },
+        { value: "Tâche", text: "Tâche" },
+      ],
+      priorityOptions: [
+        { value: "Basse", text: "Basse" },
+        { value: "Moyenne", text: "Moyenne" },
+        { value: "Haute", text: "Haute" },
+      ],
+      scrumboardTypeOptions: [
+        { value: null, text: "Type de projet", disabled: true },
+        { value: "TP", text: "TP" },
+        { value: "Projet personnel", text: "Projet personnel" },
+      ],
       // for new tasks
       form: {
         storyTitle: "",
@@ -275,7 +271,7 @@ export default {
         scrumKey: "",
         scrumType: "",
         scrumDesc: "",
-    },
+      },
       // 4 arrays to keep track of our 4 statuses
       arrBackLog: [
         { name: "Code Sign Up Page" },
@@ -312,11 +308,11 @@ export default {
       // when the modal has hidden
       this.$refs["my-modal-edit"].toggle("#toggle-btn");
     },
-    generateKey: function() {
-        const key = this.scrumboards.key;
-        const number = this.backlogAPI.length + 1;
-        const strKey = key + number;
-        return strKey;
+    generateKey: function () {
+      const key = this.scrumboards.key;
+      const number = this.backlogAPI.length + 1;
+      const strKey = key + number;
+      return strKey;
     },
     //add new tasks method
     add: function () {
@@ -341,7 +337,7 @@ export default {
           this.errMessage = "Erreur";
         });
     },
-    saveEdit: function() {
+    saveEdit: function () {
       const data = {
         name: this.editForm.scrumTitle,
         key: this.editForm.scrumKey,
@@ -351,7 +347,7 @@ export default {
       console.log("task data:" + data);
       ScrumboardDataService.update(this.scrumboards._id, data)
         .then((response) => {
-          console.log('updated data: ' + JSON.stringify(response.data));
+          console.log("updated data: " + JSON.stringify(response.data));
           location.reload();
         })
         .catch((e) => {
@@ -370,9 +366,10 @@ export default {
         });
     },
     // TO DO
-    storyMove: function (evt) {
-      console.log(evt.draggedContext)
-      console.log('story id : ' + evt.draggedContext.element._id)
+    storyMove: function (evt, movement) {
+      console.log(evt.draggedContext);
+      console.log("story id : " + evt.draggedContext.element._id);
+      console.log("column id : " + movement.rootEl["id"]);
       return true;
     },
   },
@@ -386,7 +383,7 @@ export default {
         this.editForm.scrumDesc = this.scrumboards.description;
         this.editForm.scrumKey = this.scrumboards.key;
         this.editForm.scrumType = this.scrumboards.type;
-    })
+      })
       .catch((e) => console.log(e));
     StoriesDataService.getAllFromScrum(this.$route.params.id)
       .then((response2) => {
