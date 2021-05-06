@@ -14,7 +14,9 @@
       <b-row>
         <b-col md="3">
           <div class="text-center">
-            <b-avatar :src="profile.profilePic" size="100%"></b-avatar>
+            <b-avatar :src="profile.profilePic" size="15em">
+            </b-avatar>
+            <b-button pill id="show-btn" variant='primary' @click="isHidden = !isHidden" class="mx-0 my-1"><b-icon-pencil></b-icon-pencil> Modifier </b-button>
             <div class="my-3 d-flex justify-content-around">
               <b-badge pill>
                 <b-icon-person-fill></b-icon-person-fill>
@@ -37,13 +39,14 @@
             </b-list-group-item>
             <b-list-group-item
               button
+              v-for="account in profile.gitHubLinks"
+              v-bind:key="account"
             >
-              <b-icon-github></b-icon-github> <a :href="'https://github.com/' + profile.gitHubLink" target="_blank">{{ profile.gitHubLink }}</a>
+              <b-icon-github></b-icon-github> <a :href="'https://github.com/' + account" target="_blank">{{ account }}</a>
             </b-list-group-item>
           </b-list-group>
         </b-col>
-        <b-col md="9" class="text-center">
-           <b-button id="show-btn" @click="isHidden = !isHidden"><b-icon-pencil></b-icon-pencil> Modifier </b-button>
+        <b-col md="9">
            <b-form v-if="isHidden" @submit="saveEdit">
               <b-form-group
               label="Modifier la photo de profil :">
@@ -78,9 +81,10 @@
               </b-form-select>
               </b-form-group>
               <b-form-group
-              label="Compte GitHub :">
+              label="Compte GitHub :"
+              description="Veuillez entrer vos noms de compte GitHub séparés par une virgule (sans espace)">
               <b-form-input
-                v-model="editForm.githubLink"
+                v-model="editForm.gitHubLinks"
                 required
                 placeholder=""
               ></b-form-input>
@@ -106,7 +110,7 @@ export default {
         classYear: "",
         classStatus: "",
         classLocation: "",
-        githubLink: ""
+        gitHubLinks: ""
       },
       classOptions: [
         { text: 'L1', value: 'L1' },
@@ -136,7 +140,7 @@ export default {
         classYear: this.editForm.classYear,
         classStatus: this.editForm.classStatus,
         classLocation: this.editForm.classLocation,
-        gitHubLink: this.editForm.githubLink,
+        gitHubLinks: this.editForm.gitHubLinks.split(","),
         googleId: this.profile.googleId
       };
       UsersDataService.update(this.profile._id, data)
@@ -159,7 +163,7 @@ export default {
         this.editForm.classYear = this.profile.classYear
         this.editForm.classStatus = this.profile.classStatus
         this.editForm.classLocation = this.profile.classLocation
-        this.editForm.githubLink= this.profile.gitHubLink
+        this.editForm.gitHubLinks= this.profile.gitHubLinks.join(",")
       }).catch(e => console.log(e));
   }
 };
