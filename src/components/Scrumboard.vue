@@ -5,6 +5,7 @@
     <div class="row">
       <div class="col form-inline">
         <b-button id="show-btn" @click="showModal">Ajouter</b-button>
+        <b-button id="show-btn" @click="showEditModal">Modifier</b-button>
         <!-- BEGIN MODAL -->
         <b-modal ref="my-modal" hide-footer title="Ajouter une story/tâche">
           <div class="d-block">
@@ -56,6 +57,48 @@
           </div>
         </b-modal>
         <!-- END MODAL -->
+
+        <b-modal ref="my-modal-edit" hide-footer title="Modifier le scrumboard">
+            <div class="d-block">
+              <b-form @submit="saveEdit">
+                 <b-form-group
+               label="Nom :">
+              <b-form-input
+                v-model="editForm.scrumTitle"
+                required
+                placeholder="Nom du scrumboard"
+              ></b-form-input>
+                 </b-form-group>
+                <b-form-group
+               label="Type :">
+               <b-form-select 
+              v-model="editForm.scrumType" 
+              :options="options">
+              </b-form-select>
+                  </b-form-group>
+              <b-form-group
+               label="Description :">
+             <b-form-textarea
+                id="textarea-no-resize"
+                v-model="editForm.scrumDesc"
+                placeholder="Description du scrumboard"
+                rows="3"
+                no-resize
+              ></b-form-textarea>
+              </b-form-group>
+               <b-form-group
+               label="Clé :">
+              <b-form-input
+                v-model="editForm.scrumKey"
+                required
+                placeholder="Clé"
+              ></b-form-input>
+               </b-form-group>
+              <b-button type="submit" variant="primary" class="ml-3">Modifier</b-button>
+            </b-form>
+            </div>
+        </b-modal>
+
       </div>
     </div>
     <div class="row mt-5">
@@ -217,6 +260,13 @@ export default {
         storyPts: "",
         storyPriority: "",
       },
+      editForm: {
+        scrumId: "",
+        scrumTitle: "",
+        scrumKey: "",
+        scrumType: "",
+        scrumDesc: "",
+    },
       // 4 arrays to keep track of our 4 statuses
       arrBackLog: [
         { name: "Code Sign Up Page" },
@@ -234,13 +284,24 @@ export default {
     showModal() {
       this.$refs["my-modal"].show();
     },
+    showEditModal() {
+      this.$refs["my-modal-edit"].show();
+    },
     hideModal() {
       this.$refs["my-modal"].hide();
+    },
+    hideEditModal() {
+      this.$refs["my-modal-edit"].hide();
     },
     toggleModal() {
       // We pass the ID of the button that we want to return focus to
       // when the modal has hidden
       this.$refs["my-modal"].toggle("#toggle-btn");
+    },
+    toggleEditModal() {
+      // We pass the ID of the button that we want to return focus to
+      // when the modal has hidden
+      this.$refs["my-modal-edit"].toggle("#toggle-btn");
     },
     generateKey: function() {
         const key = this.scrumboards.key;
@@ -300,8 +361,12 @@ export default {
     ScrumboardDataService.get(this.$route.params.id)
       .then((response) => {
         this.scrumboards = response.data;
-        console.log("scrum" + response.data);
-      })
+        console.log("this.scrumboards" + JSON.stringify(this.scrumboards));
+        this.editForm.scrumTitle = this.scrumboards.name;
+        this.editForm.scrumDesc = this.scrumboards.description;
+        this.editForm.scrumKey = this.scrumboards.key;
+        this.editForm.scrumType = this.scrumboards.type;
+    })
       .catch((e) => console.log(e));
     StoriesDataService.getAllFromScrum(this.$route.params.id)
       .then((response2) => {
@@ -309,8 +374,6 @@ export default {
         console.log("stories" + JSON.stringify(this.backlogAPI));
       })
       .catch((e) => console.log(e));
-
-
   },
 };
 </script>
