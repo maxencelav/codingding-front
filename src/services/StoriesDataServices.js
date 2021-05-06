@@ -27,6 +27,10 @@ class StoryDataService {
     return http.get(`/stories/scrumboard/${id}`)
   }
 
+  updateDrag(id, data) {
+    return http.put(`/stories/${id}/drag`, data)
+  }
+
 }
 
 export default new StoryDataService();

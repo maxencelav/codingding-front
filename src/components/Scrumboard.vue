@@ -367,9 +367,48 @@ export default {
     },
     // TO DO
     storyMove: function (evt, movement) {
-      console.log(evt.draggedContext);
-      console.log("story id : " + evt.draggedContext.element._id);
-      console.log("column id : " + movement.rootEl["id"]);
+      console.log(evt.draggedContext.element)
+      let storyId = evt.draggedContext.element._id;
+      let pageColId = movement.rootEl["id"];
+      let apiColId = 0;
+
+      switch(pageColId){
+        case "userstories-col":
+          apiColId = 0;
+          break;
+        case "todo-col":
+          apiColId = 1;
+          break;
+        case "inprogress-col":
+          apiColId = 2;
+          break;
+        case "done-col":
+          apiColId = 3;
+          break;
+        default:
+          apiColId = 0;
+          break;
+      }
+
+      const data = {
+        name: evt.draggedContext.element.name,
+        key: evt.draggedContext.element.key,
+        type: evt.draggedContext.element.type,
+        storyPts: evt.draggedContext.element.storyPts,
+        description: evt.draggedContext.element.description,
+        priority: evt.draggedContext.element.priority,
+        boardId: evt.draggedContext.element.boardId,
+        status: apiColId
+      }
+
+      StoriesDataService.update(storyId, data)
+      .then((response) => {
+          console.log("updated data dnd: " + JSON.stringify(response.data));      
+        })
+        .catch((e) => {
+          console.log(e);
+          this.errMessage = "Erreur";
+        });
       return true;
     },
   },
