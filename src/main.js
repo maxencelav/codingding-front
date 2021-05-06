@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import VueCookies from 'vue-cookies'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-import './assets/scss/custom.scss'
+import './assets/scss/custom_codingding.scss'
 
 Vue.use(VueCookies)
 Vue.use(BootstrapVue)
