@@ -5,58 +5,83 @@
       <p class="lead">Retrouvez ici la liste de vos scrumboards.</p>
       <b-button id="show-btn" @click="showModal">Ajouter</b-button>
 
-        <b-modal ref="my-modal" hide-footer title="Ajouter la story/tâche">
-          <div class="d-block text-center">
+        <b-modal ref="my-modal" hide-footer title="Ajouter un scrumboard">
+          <div class="d-block">
             <b-form @submit="add">
+               <b-form-group
+               label="Nom :">
               <b-form-input
                 v-model="form.scrumTitle"
                 required
-                placeholder="Nom"
+                placeholder="Nom du scrumboard"
               ></b-form-input>
-              <b-form-input
-                v-model="form.scrumType"
-                required
-                placeholder="Type"
-              ></b-form-input>
-              <b-form-input
+               </b-form-group>
+               <b-form-group
+               label="Type :">
+              <b-form-select 
+              v-model="form.scrumType" 
+              :options="options">
+              </b-form-select>
+               </b-form-group>
+               <b-form-group
+               label="Description :">
+               <b-form-textarea
+                id="textarea-no-resize"
                 v-model="form.scrumDesc"
-                required
-                placeholder="Description"
-              ></b-form-input>
+                placeholder="Description du scrumboard"
+                rows="3"
+                no-resize
+              ></b-form-textarea>
+               </b-form-group>
+               <b-form-group
+               label="Clé :">
               <b-form-input
                 v-model="form.scrumKey"
                 required
-                placeholder="Clé"
+                placeholder="Définissez une clé (ex: SCB)"
               ></b-form-input>
-              <b-button type="submit" variant="primary" class="ml-3">Add</b-button>
+               </b-form-group>
+              <b-button type="submit" variant="primary" class="ml-3">Ajouter</b-button>
             </b-form>
             </div>
           </b-modal>
 
-           <b-modal ref="my-modal-edit" hide-footer title="Modifier la story/tâche">
-            <div class="d-block text-center">
+           <b-modal ref="my-modal-edit" hide-footer title="Modifier le scrumboard">
+            <div class="d-block">
               <b-form @submit="saveEdit">
+                 <b-form-group
+               label="Nom :">
               <b-form-input
                 v-model="editForm.scrumTitle"
                 required
-                placeholder="Nom"
-                value="Hello"
+                placeholder="Nom du scrumboard"
               ></b-form-input>
-              <b-form-input
-                v-model="editForm.scrumType"
-                required
-                placeholder="Type"
-              ></b-form-input>
-              <b-form-input
+                 </b-form-group>
+                <b-form-group
+               label="Type :">
+               <b-form-select 
+              v-model="editForm.scrumType" 
+              :options="options">
+              </b-form-select>
+                  </b-form-group>
+              <b-form-group
+               label="Description :">
+             <b-form-textarea
+                id="textarea-no-resize"
                 v-model="editForm.scrumDesc"
-                required
-                placeholder="Description"
-              ></b-form-input>
+                placeholder="Description du scrumboard"
+                rows="3"
+                no-resize
+              ></b-form-textarea>
+              </b-form-group>
+               <b-form-group
+               label="Clé :">
               <b-form-input
                 v-model="editForm.scrumKey"
                 required
                 placeholder="Clé"
               ></b-form-input>
+               </b-form-group>
               <b-button type="submit" variant="primary" class="ml-3">Modifier</b-button>
             </b-form>
             </div>
@@ -80,11 +105,16 @@ export default {
   data() {
     return {
     title: '',
+    options: [
+      { value: null, text:'Type de projet', disabled: true},
+      { value: 'TP', text: 'TP'},
+      { value: 'Projet personnel', text: 'Projet personnel'}
+    ],
     form: {
       scrumTitle: "",
       scrumKey: "",
       scrumType: "",
-      scrumDesc: ""
+      scrumDesc: "",
     },
     editForm: {
       scrumId: "",

@@ -7,35 +7,50 @@
         <b-button id="show-btn" @click="showModal">Ajouter</b-button>
         <!-- BEGIN MODAL -->
         <b-modal ref="my-modal" hide-footer title="Ajouter une story/tâche">
-          <div class="d-block text-center">
+          <div class="d-block">
             <b-form @submit="add">
+              <b-form-group
+              label="Nom :">
               <b-form-input
                 v-model="form.storyTitle"
                 required
-                placeholder="Nom"
+                placeholder="Nom de la story/tâche"
               ></b-form-input>
-              <b-form-input
+              </b-form-group>
+              <b-form-group
+              label="Description :">
+               <b-form-textarea
+                id="textarea-no-resize"
                 v-model="form.storyDesc"
-                required
-                placeholder="Description"
-              ></b-form-input>
-              <b-form-input
-                v-model="form.storyType"
-                required
-                placeholder="Type"
-              ></b-form-input>
+                placeholder="Description de la story/tâche"
+                rows="3"
+                no-resize
+              ></b-form-textarea>
+              </b-form-group>
+              <b-form-group
+              label="Type :">
+              <b-form-select 
+              v-model="form.storyType" 
+              :options="options">
+              </b-form-select>
+              </b-form-group>
+              <b-form-group
+              label="Story Points :">
               <b-form-input
                 v-model="form.storyPts"
                 required
-                placeholder="Story Points"
+                placeholder="Valeur de la story"
               ></b-form-input>
-              <b-form-input
-                v-model="form.storyPriority"
-                required
-                placeholder="Priority"
-              ></b-form-input>
-              <b-button type="submit" variant="primary" class="ml-3"
-                >Add</b-button
+              </b-form-group>
+              <b-form-group
+              label="Priorité :">
+             <b-form-select 
+              v-model="form.storyPriority" 
+              :options="priorityOptions">
+              </b-form-select>
+              </b-form-group>
+                <b-button type="submit" variant="primary" class="ml-3"
+                >Ajouter</b-button
               >
             </b-form>
           </div>
@@ -184,6 +199,16 @@ export default {
     return {
       scrumboards: [],
       backlogAPI: [],
+      options: [
+      { value: 'US', text: 'User Story'},
+      { value: 'Epic', text: 'Epic'},
+      { value: 'Task', text: 'Tâche'},
+    ],
+    priorityOptions: [
+      { value: 'Basse', text: 'Basse'},
+      { value: 'Moyenne', text: 'Moyenne'},
+      { value: 'Haute', text: 'Haute'},
+    ],
       // for new tasks
       form: {
         storyTitle: "",
