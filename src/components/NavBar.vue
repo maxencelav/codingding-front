@@ -21,16 +21,24 @@
             <template #button-content>
               <b-avatar :src="user.profilePic"></b-avatar>
             </template>
+            <div v-if="!user">
             <b-dropdown-item
               href="http://localhost:4000/auth/google"
               target="_blank"
               >Se connecter</b-dropdown-item
+            >
+            </div>
+            <div v-else>
+            <b-dropdown-item
+              :router-tag="profile"
+              >Mon profil</b-dropdown-item
             >
             <b-dropdown-item
               href="http://localhost:4000/auth/logout"
               target="_blank"
               >Se déconnecter</b-dropdown-item
             >
+            </div>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>

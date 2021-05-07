@@ -38,6 +38,7 @@
 import Achievement from "./Achievement.vue";
 import AchievementsDataService from "../services/AchievementsDataService";
 import axios from 'axios';
+import Vue from 'vue';
 
 export default {
   name: "Achievements",
@@ -47,6 +48,7 @@ export default {
   data() {
     return {
       achievements: [],
+      currentUser: "",
       form: {
         title: '',
         message: ''
@@ -60,6 +62,7 @@ export default {
       const data = {
         name: this.form.title,
         message: this.form.message,
+        creatorId: this.currentUser._id
       };
       console.log(data);
       axios.post("http://localhost:4000/achievements", data)
@@ -83,12 +86,15 @@ export default {
           })
     }
   },
+  created() {
+    this.currentUser = Vue.getCurrentUser();
+  },
   mounted() {
     AchievementsDataService.getAll()
       .then((response) => {
         this.achievements = response.data;
         console.log(response.data);
-      });
+  });
   }
 };
 </script>

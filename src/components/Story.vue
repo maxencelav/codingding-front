@@ -81,11 +81,14 @@
 
 <script>
 import StoriesDataService from '../services/StoriesDataServices';
+import Vue from 'vue';
+
 export default {
   name: "Story",
   data() {
     return {
       story: {}, 
+      currentUser: "",
       options: [
         { value: "User Story", text: "User Story" },
         { value: "Epic", text: "Epic" },
@@ -125,7 +128,9 @@ export default {
         storyPts: this.editForm.storyPts,
         key: this.story.key,
         priority: this.editForm.storyPriority,
-        boardId: this.story.boardId
+        boardId: this.story.boardId,
+        creatorId: this.currentUser._id,
+        status: this.story.status
       };
       StoriesDataService.update(this.story._id, data)
         .then((response) => {
@@ -160,6 +165,9 @@ export default {
       
       console.log(response.data);
       }).catch(e => console.log(e));
+  },
+  created() {
+    this.currentUser = Vue.getCurrentUser();
   }
 };
 </script>

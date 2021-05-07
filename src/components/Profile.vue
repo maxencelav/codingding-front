@@ -16,7 +16,7 @@
           <div class="text-center">
             <b-avatar :src="profile.profilePic" size="15em">
             </b-avatar>
-            <b-button pill id="show-btn" variant='primary' @click="isHidden = !isHidden" class="mx-0 my-1"><b-icon-pencil></b-icon-pencil> Modifier </b-button>
+            <b-button pill id="show-btn" variant='primary' @click="isHidden = !isHidden" v-if="currentUser._id == profile._id" class="mx-0 my-1"><b-icon-pencil></b-icon-pencil> Modifier </b-button>
             <div class="my-3 d-flex justify-content-around">
               <b-badge pill>
                 <b-icon-person-fill></b-icon-person-fill>
@@ -99,11 +99,15 @@
 
 <script>
 import UsersDataService from '../services/UsersDataService';
+import Vue from 'vue';
+
 export default {
   name: "Profile",
+  currentUser:"",
   data() {
     return {
       profile: {},
+      currentUser:"",
       isHidden: false,
       editForm: {
         profilePic: "",
@@ -141,7 +145,7 @@ export default {
         classStatus: this.editForm.classStatus,
         classLocation: this.editForm.classLocation,
         gitHubLinks: this.editForm.gitHubLinks.split(","),
-        googleId: this.profile.googleId
+        googleId: this.profile.googleId 
       };
       UsersDataService.update(this.profile._id, data)
         .then((response) => {
@@ -153,6 +157,9 @@ export default {
           this.errMessage = "Erreur";
         });
     },
+  },
+  created() {
+    this.currentUser = Vue.getCurrentUser();
   },
   mounted() {
     UsersDataService.get(this.$route.params.id)

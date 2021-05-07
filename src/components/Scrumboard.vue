@@ -2,12 +2,25 @@
   <div class="container mt-5">
     <h2>{{ scrumboards.name }}</h2>
     <p class="lead">{{ scrumboards.key }} - {{ scrumboards.type }}</p>
+    <p class="lead">Membres de l'équipe : <b-badge class="mx-1" v-for="member in members" v-bind:key="member">{{ member + " "}}</b-badge></p>
     <div class="row">
       <div class="col form-inline">
-            <b-button-group size="lg">
-        <b-button variant="primary" id="show-btn" @click="showModal"><b-icon-plus-circle-fill></b-icon-plus-circle-fill> Ajouter</b-button>
-        <b-button id="show-btn" @click="showEditModal"><b-icon-pencil></b-icon-pencil> Modifier</b-button>
-            </b-button-group>
+        <b-button-group size="lg">
+          <b-button variant="primary" id="show-btn" @click="showModal"
+            ><b-icon-plus-circle-fill></b-icon-plus-circle-fill>
+            Ajouter</b-button
+          >
+          <b-button variant="primary" id="show-btn" @click="showMembersModal"
+            ><b-icon-plus-circle-fill></b-icon-plus-circle-fill>
+            Ajouter des membres</b-button
+          >
+          <b-button id="show-btn" @click="showEditModal"
+            ><b-icon-pencil></b-icon-pencil> Modifier</b-button
+          >
+          <b-button variant="danger" @click="deleteScrum"
+            ><b-icon-x></b-icon-x>Supprimer</b-button
+          >
+        </b-button-group>
         <!-- BEGIN MODAL -->
         <b-modal ref="my-modal" hide-footer title="Ajouter une story/tâche">
           <div class="d-block">
@@ -93,6 +106,18 @@
             </b-form>
           </div>
         </b-modal>
+
+         <b-modal ref="my-modal-addMembers" hide-footer title="Ajouter des membres">
+          <div class="d-block">
+            <b-form @submit="addMembers">
+                 <b-form-select v-model="formAddMembers.members" :options="membersOptions">
+                </b-form-select>
+              <b-button type="submit" variant="primary" class="ml-3"
+                >Ajouter</b-button
+              >
+            </b-form>
+          </div>
+        </b-modal>
       </div>
     </div>
     <div class="row mt-5">
@@ -109,7 +134,7 @@
           >
             <div
               class="list-group-item"
-              v-for="(element) in arrUserStories"
+              v-for="element in arrUserStories"
               :key="element.name"
             >
               <b-row align-h="between">
@@ -142,7 +167,7 @@
           >
             <div
               class="list-group-item"
-              v-for="(element) in arrToDo"
+              v-for="element in arrToDo"
               :key="element.name"
             >
               <b-row align-h="between">
@@ -175,7 +200,7 @@
           >
             <div
               class="list-group-item"
-              v-for="(element) in arrInProgress"
+              v-for="element in arrInProgress"
               :key="element.name"
             >
               <b-row align-h="between">
@@ -208,7 +233,7 @@
           >
             <div
               class="list-group-item"
-              v-for="(element) in arrDone"
+              v-for="element in arrDone"
               :key="element.name"
             >
               <b-row align-h="between">
@@ -237,6 +262,8 @@ import draggable from "vuedraggable";
 import ScrumboardDataService from "../services/ScrumboardDataService";
 import StoriesDataService from "../services/StoriesDataServices";
 // import axios from 'axios';
+import Vue from "vue";
+import UsersDataService from '../services/UsersDataService';
 
 export default {
   name: "Scrumboard",
@@ -248,6 +275,9 @@ export default {
     return {
       scrumboards: [],
       backlogAPI: [],
+      currentUser: "",
+      members: "",
+      membersOptions: [],
       options: [
         { value: "User Story", text: "User Story" },
         { value: "Epic", text: "Epic" },
@@ -278,6 +308,9 @@ export default {
         scrumType: "",
         scrumDesc: "",
       },
+      formAddMembers: {
+        members: ""
+      },
       // 4 arrays to keep track of our 4 statuses
       arrUserStories: [],
       arrToDo: [],
@@ -293,11 +326,17 @@ export default {
     showEditModal() {
       this.$refs["my-modal-edit"].show();
     },
+    showMembersModal() {
+      this.$refs["my-modal-addMembers"].show();
+    },
     hideModal() {
       this.$refs["my-modal"].hide();
     },
     hideEditModal() {
       this.$refs["my-modal-edit"].hide();
+    },
+    hideMembersModal() {
+      this.$refs["my-modal-addMembers"].hide();
     },
     toggleModal() {
       // We pass the ID of the button that we want to return focus to
@@ -308,6 +347,9 @@ export default {
       // We pass the ID of the button that we want to return focus to
       // when the modal has hidden
       this.$refs["my-modal-edit"].toggle("#toggle-btn");
+    },
+    toggleMembersModal() {
+      this.$refs["my-modal-addMembers"].toggle("#toggle-btn");
     },
     generateKey: function () {
       const key = this.scrumboards.key;
@@ -325,6 +367,8 @@ export default {
         description: this.form.storyDesc,
         priority: this.form.storyPriority,
         boardId: this.$route.params.id,
+        creatorId: this.currentUser._id,
+        status: "0",
       };
 
       StoriesDataService.create(data)
@@ -332,7 +376,7 @@ export default {
           this.arrUserStories.push(response.data);
         })
         .catch((e) => {
-          this.errMessage = "Erreur : " + e ;
+          this.errMessage = "Erreur : " + e;
         });
     },
     saveEdit: function () {
@@ -341,6 +385,7 @@ export default {
         key: this.editForm.scrumKey,
         type: this.editForm.scrumType,
         description: this.editForm.scrumDesc,
+        creatorId: this.currentUser._id,
       };
       ScrumboardDataService.update(this.scrumboards._id, data)
         .then((response) => {
@@ -350,6 +395,16 @@ export default {
         .catch((e) => {
           console.log(e);
           this.errMessage = "Erreur";
+        });
+    },
+    deleteScrum: function () {
+      ScrumboardDataService.delete(this.scrumboards._id)
+        .then(() => {
+          console.log("in delete scrum...");
+          this.$router.push("/scrumboards");
+        })
+        .catch((e) => {
+          console.log(e);
         });
     },
     // TO DO
@@ -385,6 +440,7 @@ export default {
         description: evt.draggedContext.element.description,
         priority: evt.draggedContext.element.priority,
         boardId: evt.draggedContext.element.boardId,
+        creatorId: this.currentUser._id,
         status: apiColId,
       };
 
@@ -398,48 +454,71 @@ export default {
         });
       return true;
     },
-    updateScrumboard: function() {
-       ScrumboardDataService.get(this.$route.params.id)
-      .then((response) => {
-        this.scrumboards = response.data;
+    updateScrumboard: function () {
+      ScrumboardDataService.get(this.$route.params.id)
+        .then((response) => {
+          this.scrumboards = response.data;
 
-        this.editForm.scrumTitle = this.scrumboards.name;
-        this.editForm.scrumDesc = this.scrumboards.description;
-        this.editForm.scrumKey = this.scrumboards.key;
-        this.editForm.scrumType = this.scrumboards.type;
-      })
-      .catch((e) => console.log(e));
+          this.editForm.scrumTitle = this.scrumboards.name;
+          this.editForm.scrumDesc = this.scrumboards.description;
+          this.editForm.scrumKey = this.scrumboards.key;
+          this.editForm.scrumType = this.scrumboards.type;
+          this.members = this.scrumboards.members;
+        })
+        .catch((e) => console.log(e));
     },
-    updateStories: function() {
+    updateStories: function () {
       StoriesDataService.getAllFromScrum(this.$route.params.id)
-      .then((response2) => {
-        this.backlogAPI = response2.data;
-        this.arrUserStories = []
-        this.arrToDo = []
-        this.arrInProgress = []
-        this.arrDone = []
-        this.backlogAPI.forEach((story) => {
-          switch (story.status) {
-            case "0":
-              this.arrUserStories.push(story);
-              break;
-            case "1":
-              this.arrToDo.push(story);
-              break;
-            case "2":
-              this.arrInProgress.push(story);
-              break;
-            case "3":
-              this.arrDone.push(story);
-              break;
-            default:
-              this.arrUserStories.push(story);
-              break;
-          }
+        .then((response2) => {
+          this.backlogAPI = response2.data;
+          this.arrUserStories = [];
+          this.arrToDo = [];
+          this.arrInProgress = [];
+          this.arrDone = [];
+          this.backlogAPI.forEach((story) => {
+            switch (story.status) {
+              case "0":
+                this.arrUserStories.push(story);
+                break;
+              case "1":
+                this.arrToDo.push(story);
+                break;
+              case "2":
+                this.arrInProgress.push(story);
+                break;
+              case "3":
+                this.arrDone.push(story);
+                break;
+              default:
+                this.arrUserStories.push(story);
+                break;
+            }
+          });
+        })
+        .catch((e) => console.log(e));
+    },
+    addMembers: function() {
+      const data = {
+        members: this.formAddMembers.members
+      };
+      ScrumboardDataService.addMemberToScrum(this.$route.params.id, data)
+         .then((response) => {
+          console.log("updated data dnd: " + JSON.stringify(response.data));
+        })
+        .catch((e) => {
+          console.log(e);
+          this.errMessage = "Erreur";
         });
-      })
-      .catch((e) => console.log(e));
     }
+  },
+  created() {
+    this.currentUser = Vue.getCurrentUser();
+    UsersDataService.getAll()
+      .then((response) => {
+        response.data.forEach(member => {
+          this.membersOptions.push({value: member.fullName, text: member.fullName})
+        })
+      }).catch(e => console.log(e));
   },
   mounted() {
     console.log("route param:" + this.$route.params.id);

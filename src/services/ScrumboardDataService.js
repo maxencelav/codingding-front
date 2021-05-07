@@ -23,6 +23,10 @@ class ScrumboardDataService {
     return http.delete(`/scrumboards/${id}`);
   }
 
+  addMemberToScrum(id, data) {
+    return http.put(`/scrumboards/${id}/addMember`, data)
+  }
+
 }
 
 export default new ScrumboardDataService();

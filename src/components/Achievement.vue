@@ -6,11 +6,11 @@
         <p>{{ achievement.message }}</p>
         <footer class="d-flex">
           <div class="blockquote-footer">
-            {{ achievement._id }}
+            {{ achievement.creatorId }}
           </div>
           <b-button-group>
           <b-button class="ml-auto">
-            <b-icon-hand-thumbs-up></b-icon-hand-thumbs-up>
+            <b-icon-hand-thumbs-up>{{getCreatorName(achievement.creatorId)}}</b-icon-hand-thumbs-up>
           </b-button>   
           <slot></slot>
           </b-button-group>  
@@ -21,10 +21,17 @@
 </template>
 
 <script>
-
+import UsersDataService from '../services/UsersDataService'
 export default {
   name: "NavBar",
-  props: ["achievement"]
+  props: ["achievement"],
+  methods: {
+    getCreatorName(id) {
+      UsersDataService.get(id)
+      .then(() => {
+      })
+    }
+  }
 };
 </script>
 

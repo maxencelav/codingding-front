@@ -16,7 +16,6 @@ const UserPlugin = {
 };
 Vue.use(UserPlugin);
 Vue.$cookies.config("7d");
-
 Vue.config.productionTip = false;
 
 new Vue({

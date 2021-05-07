@@ -48,7 +48,6 @@
       <b-table striped hover :items="scrumAPI" :fields="scrumFields">
         <template #cell(_id)="data">
             <b-button variant="primary" :to="'/scrumboard/'+data.value"><b-icon-search></b-icon-search></b-button>
-            <b-button variant="danger" v-on:click="deleteScrum(`${data.value}`, index)"><b-icon-x></b-icon-x></b-button>
         </template>
       </b-table>
     </b-container>
@@ -57,8 +56,11 @@
 
 <script>
 import ScrumboardDataService from '../services/ScrumboardDataService';
+import Vue from 'vue';
+
 export default {
   name: "Scrumboards",
+  currentUser: "",
   data() {
     return {
     title: '',
@@ -121,6 +123,7 @@ export default {
         key: this.form.scrumKey,
         type: this.form.scrumType,
         description: this.form.scrumDesc,
+        creatorId: this.currentUser._id
       };
       console.log("task data:" + data);
       ScrumboardDataService.create(data)
@@ -133,16 +136,9 @@ export default {
           this.errMessage = "Erreur";
         });
     },
-    deleteScrum: function (id, index) {
-      ScrumboardDataService.delete(id)
-        .then((response) => {
-          console.log("In delete..." + response);
-          this.scrumAPI.splice(index, 1).push(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
+  },
+  created() {
+    this.currentUser = Vue.getCurrentUser();
   },
   mounted() {
     ScrumboardDataService.getAll()
