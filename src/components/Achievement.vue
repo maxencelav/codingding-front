@@ -8,10 +8,7 @@
           <div class="blockquote-footer">
             {{ achievement.creatorId }}
           </div>
-          <b-button-group>
-          <b-button class="ml-auto">
-            <b-icon-hand-thumbs-up>{{getCreatorName(achievement.creatorId)}}</b-icon-hand-thumbs-up>
-          </b-button>   
+          <b-button-group> 
           <slot></slot>
           </b-button-group>  
         </footer>
@@ -21,17 +18,9 @@
 </template>
 
 <script>
-import UsersDataService from '../services/UsersDataService'
 export default {
   name: "NavBar",
-  props: ["achievement"],
-  methods: {
-    getCreatorName(id) {
-      UsersDataService.get(id)
-      .then(() => {
-      })
-    }
-  }
+  props: ["achievement"]
 };
 </script>
 

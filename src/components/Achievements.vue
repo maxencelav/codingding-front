@@ -12,7 +12,7 @@
           v-bind:key="achievement.id"
           v-bind:achievement="achievement"
         >   
-          <b-button variant="danger" v-on:click="deleteAchievement(`${achievement._id}`, index)"><b-icon-x></b-icon-x></b-button>
+          <b-button v-if="currentUser" variant="danger" v-on:click="deleteAchievement(`${achievement._id}`, index)"><b-icon-x></b-icon-x></b-button>
         </Achievement>
       </b-card-group>
     </b-container>
