@@ -3,9 +3,19 @@
 @import 'darkly_variables.scss';
 
 
-$primary: #af7ac5;
+$primary: $blue;
+$gray-900: #121212;
 $font-family-sans-serif: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 
-// Include Bootstrap and BootstrapVue SCSS files
+$enable-shadows:               true;
+$box-shadow:                  10px 10px 0px 2px  rgba($black, .95);
+$box-shadowRed:                  10px 10px 0px 2px  rgba($red, .95);
+$box-shadow-sm:               0 .125rem .25rem rgba($black, .075);
+$box-shadow-lg:               0 1rem 3rem rgba($black, .175);
+$box-shadow-inset:            inset 0 1px 2px rgba($black, .075);
+
+$list-group-bg:                     $white $box-shadow;
+$list-group-border-color:           $white;
+
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~bootstrap-vue/src/index.scss';

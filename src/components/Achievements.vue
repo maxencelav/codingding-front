@@ -1,7 +1,7 @@
 <template>
   <div :key="componentKey">
     <b-container>
-      <h1 class="display-1">Achievements</h1>
+      <h1 class="display-1 font-weight-bold">Achievements</h1>
       <p class="lead">
         Retrouvez ici tous les derniers accomplissements des étudiants de la
         Coding Factory.
@@ -27,7 +27,7 @@
               <b-form-input v-model="form.message" required></b-form-input>
            </b-form-group>
 
-            <b-button type="submit" variant="primary">Envoyer</b-button>
+            <b-button type="submit" variant="back" class="shadow border rounded-0 outline-dark">Envoyer</b-button>
         </b-form>
 
      </b-container>

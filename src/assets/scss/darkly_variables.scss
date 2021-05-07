@@ -28,7 +28,7 @@ $info:          $cyan !default;
 $warning:       $yellow !default;
 $danger:        $red !default;
 $light:         $gray-500 !default;
-$dark:          $gray-800 !default;
+$dark:          $black !default;
 
 $yiq-contrasted-threshold:  175 !default;
 
@@ -36,6 +36,13 @@ $yiq-contrasted-threshold:  175 !default;
 
 $body-bg:                   $gray-900 !default;
 $body-color:                $white !default;
+
+// shadow
+$enable-shadows:            true;
+$box-shadow:                14px 12px 0px -5px #000000 !default; 
+$box-shadow-sm:             0 .125rem .25rem rgba($black, .075);
+$box-shadow-lg:             0 1rem 3rem rgba($black, .175);
+$box-shadow-inset:          inset 0 1px 2px rgba($black, .075);
 
 // Links
 
@@ -153,7 +160,7 @@ $progress-bg:                       $gray-700 !default;
 
 // List group
 
-$list-group-bg:                     $gray-800 !default;
+$list-group-bg:                     $gray-800 !default  ;
 $list-group-border-color:           $gray-700 !default;
 
 $list-group-hover-bg:               $gray-700 !default;

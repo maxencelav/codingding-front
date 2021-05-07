@@ -4,7 +4,7 @@
      <p class="lead">{{scrumboards.key}} - {{scrumboards.type}}</p>
     <div class="row">
       <div class="col form-inline">
-        <b-button id="show-btn" @click="showModal">Ajouter</b-button>
+        <b-button id="show-btn" variant="dark" class="dark shadow border rounded-0 outline-dark" @click="showModal">Ajouter</b-button>
         <!-- BEGIN MODAL -->
         <b-modal ref="my-modal" hide-footer title="Ajouter une story/tâche">
           <div class="d-block">
@@ -49,7 +49,7 @@
               :options="priorityOptions">
               </b-form-select>
               </b-form-group>
-                <b-button type="submit" variant="primary" class="ml-3"
+                <b-button type="submit" variant="dark" class="ml-3 dark shadow border rounded-0 outline-dark"
                 >Ajouter</b-button
               >
             </b-form>
@@ -69,7 +69,7 @@
             group="tasks"
           >
             <div
-              class="list-group-item"
+              class="list-group-item shadow border rounded-0"
               v-for="(element, index) in backlogAPI"
               :key="element.name"
             >
@@ -105,7 +105,7 @@
             group="tasks"
           >
             <div
-              class="list-group-item"
+              class="list-group-item shadow"
               v-for="(element, index) in arrInProgress"
               :key="element.name"
             >
@@ -137,7 +137,7 @@
             group="tasks"
           >
             <div
-              class="list-group-item"
+              class="list-group-item shadow"
               v-for="(element, index) in arrTested"
               :key="element.name"
             >
@@ -163,7 +163,7 @@
             group="tasks"
           >
             <div
-              class="list-group-item"
+              class="list-group-item shadow"
               v-for="(element, index) in arrDone"
               :key="element.name"
             >

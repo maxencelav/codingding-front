@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-container>
-      <h1 class="display-1">Annuaire</h1>
+      <h1 class="display-1 font-weight-bold">Annuaire</h1>
       <p class="lead">Retrouvez ici tous les étudiants de la Coding Factory.</p>
       <b-table striped hover :items="usersAPI" :fields="userFields">
         <template #cell(profilePic)="data">

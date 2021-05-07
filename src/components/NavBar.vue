@@ -7,11 +7,11 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item to="/achievements">Achievements</b-nav-item>
-          <b-nav-item to="/planning" disabled>Agenda</b-nav-item>
-          <b-nav-item to="/scrumboards">Scrum</b-nav-item>
-          <b-nav-item to="/users">Annuaire</b-nav-item>
-          <b-nav-item to="/wishlist" disabled>Wishlist</b-nav-item>
+          <b-nav-item to="/achievements"> <b-icon icon="award-fill"></b-icon> Achievements</b-nav-item>
+          <b-nav-item to="/planning" disabled> <b-icon icon="clock-fill"></b-icon> Agenda</b-nav-item>
+          <b-nav-item to="/scrumboards"> <b-icon icon="sticky-fill"></b-icon> Scrum</b-nav-item>
+          <b-nav-item to="/users"> <b-icon icon="journal"></b-icon> Annuaire</b-nav-item>
+          <b-nav-item to="/wishlist" disabled>  <b-icon icon="clipboard"></b-icon> Wishlist</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
