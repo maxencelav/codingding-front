@@ -1,9 +1,9 @@
 <template>
   <div>
     <b-container>
-      <h1 class="display-1">Scrumboards</h1>
+      <h1 class="display-1 font-weight-bold">Scrumboards</h1>
       <p class="lead">Retrouvez ici la liste de vos scrumboards.</p>
-      <b-button id="show-btn" @click="showModal">Ajouter</b-button>
+      <b-button id="show-btn" @click="showModal" variant="dark" class="dark mb-3  border rounded-0 outline-dark" >Ajouter</b-button>
 
         <b-modal ref="my-modal" hide-footer title="Ajouter un scrumboard">
           <div class="d-block">

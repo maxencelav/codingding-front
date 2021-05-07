@@ -3,8 +3,13 @@ import App from "./App.vue";
 import router from "./router";
 import VueCookies from "vue-cookies";
 import jwt_decode from "jwt-decode";
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import './assets/scss/custom_codingding.scss'
 
 Vue.use(VueCookies);
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
+
 const UserPlugin = {
   install(Vue) {
     Vue.getCurrentUser = function() {
@@ -12,11 +17,11 @@ const UserPlugin = {
       var decoded = jwt_decode(cookies);
       return decoded.user;
     };
-  },
-};
-Vue.use(UserPlugin);
-Vue.$cookies.config("7d");
-Vue.config.productionTip = false;
+Vue.use('vue-moment')
+Vue.$cookies.config('7d')
+
+Vue.config.productionTip = false
+
 
 new Vue({
   router,

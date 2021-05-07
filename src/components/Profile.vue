@@ -33,7 +33,7 @@
             </div>
           </div>
 
-          <b-list-group>
+          <b-list-group variant="purple">
             <b-list-group-item button>
               <b-icon-envelope-fill></b-icon-envelope-fill> <a :href="'mailto:' + profile.email">{{ profile.email }}</a> 
             </b-list-group-item>
